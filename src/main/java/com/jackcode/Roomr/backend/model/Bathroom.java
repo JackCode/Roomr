@@ -1,17 +1,34 @@
 package com.jackcode.Roomr.backend.model;
 
-public class Bathroom {
-    private String description;
+public class Bathroom extends AbstractEntity {
+
+    public enum BathroomType {
+        WALK_IN_SHOWER("Walk-in Shower Only"),
+        BATH_SHOWER_COMBO("Bathtub-Shower Combo"),
+        SEPARATE_BATH_AND_SHOWER("Separate Bath and Walk-In Shower");
+
+        private String description;
+
+        BathroomType(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
+    }
+
+    private BathroomType bathroomType;
     private Integer numberOfSinks;
     private Integer numberOfShowerHeads;
     private Boolean hasTv;
 
-    public String getDescription() {
-        return description;
+    public BathroomType getBathroomType() {
+        return bathroomType;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBathroomType(BathroomType bathroomType) {
+        this.bathroomType = bathroomType;
     }
 
     public Integer getNumberOfSinks() {
@@ -30,7 +47,7 @@ public class Bathroom {
         this.numberOfShowerHeads = numberOfShowerHeads;
     }
 
-    public Boolean getHasTv() {
+    public Boolean hasTv() {
         return hasTv;
     }
 

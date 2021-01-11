@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import java.net.URL;
 import java.util.List;
 
-@Entity
-public class Room {
+
+public class Room extends AbstractEntity implements Cloneable {
 
     private Integer roomNumber;
     private Integer floor;
@@ -61,7 +61,7 @@ public class Room {
         this.squareFootage = squareFootage;
     }
 
-    public Boolean getHasFireplace() {
+    public Boolean hasFireplace() {
         return hasFireplace;
     }
 
@@ -69,7 +69,7 @@ public class Room {
         this.hasFireplace = hasFireplace;
     }
 
-    public Boolean getHasBuiltInDrawers() {
+    public Boolean hasBuiltInDrawers() {
         return hasBuiltInDrawers;
     }
 
@@ -77,7 +77,7 @@ public class Room {
         this.hasBuiltInDrawers = hasBuiltInDrawers;
     }
 
-    public Boolean getHasSofa() {
+    public Boolean hasSofa() {
         return hasSofa;
     }
 
@@ -85,7 +85,7 @@ public class Room {
         this.hasSofa = hasSofa;
     }
 
-    public Boolean getHasSkylight() {
+    public Boolean hasSkylight() {
         return hasSkylight;
     }
 
@@ -93,7 +93,7 @@ public class Room {
         this.hasSkylight = hasSkylight;
     }
 
-    public Boolean getHasBalcony() {
+    public Boolean hasBalcony() {
         return hasBalcony;
     }
 
