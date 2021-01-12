@@ -1,0 +1,40 @@
+/* List view */
+.list-view .content {
+    display: flex;
+}
+
+.list-view .room-type-filter {
+}
+
+.list-view .room-grid {
+    flex: 1;
+}
+
+.list-view .room-view-form {
+    flex: 3;
+    padding: var(--lumo-space-m);
+}
+
+.room-view-form .room-content {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.room-view-form .properties {
+    flex: 4;
+}
+
+.room-view-form .scroller {
+    flex: 3;
+    margin-top: 0;
+    padding-left: var(--lumo-space-m);
+    padding-right: var(--lumo-space-m);
+}
+
+@media all and (max-width: 1100px) {
+    .list-view.editing .toolbar,
+    .list-view.editing .room-grid {
+        display: none;
+    }
+}

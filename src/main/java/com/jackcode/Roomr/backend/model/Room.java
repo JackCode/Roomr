@@ -1,30 +1,49 @@
 package com.jackcode.Roomr.backend.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.annotation.PostConstruct;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
+@Entity
+public class Room extends AbstractEntity implements Cloneable, Serializable {
 
-public class Room extends AbstractEntity implements Cloneable {
-
+    @NotNull
     private Integer roomNumber;
     private Integer floor;
     private RoomType roomType;
-    private Bathroom bathroom;
-    private Integer squareFootage;
 
+    @ManyToOne
+    @JoinColumn(name = "bathroom_id")
+    private Bathroom bathroom;
+
+    private Integer squareFootage;
     private Boolean hasFireplace;
     private Boolean hasBuiltInDrawers;
     private Boolean hasSofa;
     private Boolean hasSkylight;
     private Boolean hasBalcony;
 
-    private List<Integer> connectingRooms;
-    private List<String> facing;
+    public Room() {
+    }
+
+    @ElementCollection(targetClass = Integer.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<Integer> connectingRooms;
+
+    @ElementCollection(targetClass = Facing.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<Facing> facing;
+
+    @ElementCollection(targetClass = URL.class, fetch = FetchType.EAGER)
     private List<URL> photos;
 
-    @PostConstruct
     private void setFloor() {
         this.floor = (this.roomNumber / 10) / 10;
     }
@@ -35,6 +54,7 @@ public class Room extends AbstractEntity implements Cloneable {
 
     public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
+        this.setFloor();
     }
 
     public RoomType getRoomType() {
@@ -61,7 +81,7 @@ public class Room extends AbstractEntity implements Cloneable {
         this.squareFootage = squareFootage;
     }
 
-    public Boolean hasFireplace() {
+    public Boolean getHasFireplace() {
         return hasFireplace;
     }
 
@@ -69,7 +89,7 @@ public class Room extends AbstractEntity implements Cloneable {
         this.hasFireplace = hasFireplace;
     }
 
-    public Boolean hasBuiltInDrawers() {
+    public Boolean getHasBuiltInDrawers() {
         return hasBuiltInDrawers;
     }
 
@@ -77,7 +97,7 @@ public class Room extends AbstractEntity implements Cloneable {
         this.hasBuiltInDrawers = hasBuiltInDrawers;
     }
 
-    public Boolean hasSofa() {
+    public Boolean getHasSofa() {
         return hasSofa;
     }
 
@@ -85,7 +105,7 @@ public class Room extends AbstractEntity implements Cloneable {
         this.hasSofa = hasSofa;
     }
 
-    public Boolean hasSkylight() {
+    public Boolean getHasSkylight() {
         return hasSkylight;
     }
 
@@ -93,7 +113,7 @@ public class Room extends AbstractEntity implements Cloneable {
         this.hasSkylight = hasSkylight;
     }
 
-    public Boolean hasBalcony() {
+    public Boolean getHasBalcony() {
         return hasBalcony;
     }
 
@@ -101,19 +121,19 @@ public class Room extends AbstractEntity implements Cloneable {
         this.hasBalcony = hasBalcony;
     }
 
-    public List<Integer> getConnectingRooms() {
+    public Set<Integer> getConnectingRooms() {
         return connectingRooms;
     }
 
-    public void setConnectingRooms(List<Integer> connectingRooms) {
+    public void setConnectingRooms(Set<Integer> connectingRooms) {
         this.connectingRooms = connectingRooms;
     }
 
-    public List<String> getFacing() {
+    public Set<Facing> getFacing() {
         return facing;
     }
 
-    public void setFacing(List<String> facing) {
+    public void setFacing(Set<Facing> facing) {
         this.facing = facing;
     }
 
@@ -123,6 +143,10 @@ public class Room extends AbstractEntity implements Cloneable {
 
     public void setPhotos(List<URL> photos) {
         this.photos = photos;
+    }
+
+    public Integer getFloor() {
+        return floor;
     }
 
     @Override
