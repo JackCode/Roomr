@@ -1,5 +1,7 @@
 package com.jackcode.Roomr.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class AbstractEntity implements Cloneable, Serializable {
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -16,6 +19,7 @@ public abstract class AbstractEntity implements Cloneable, Serializable {
         return id;
     }
 
+    @JsonIgnore
     public boolean isPersisted() {
         return id != null;
     }

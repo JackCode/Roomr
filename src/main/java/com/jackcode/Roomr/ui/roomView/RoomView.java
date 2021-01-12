@@ -8,10 +8,8 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,33 +17,42 @@ public class RoomView extends VerticalLayout {
     private Room room;
     private H2 title = new H2();
     private Grid<RoomProperty> propertyGrid = new Grid<>(RoomProperty.class);
-    private VerticalLayout roomPhotos = new VerticalLayout();
-    private Scroller imageScroller = new Scroller();
+    private Grid<Image> imageGrid = new Grid<>();
 
 
     public RoomView() {
         addClassName("room-view-form");
-        configurePropertyGrid();
-        configureImageScroller();
-        configureRoomPhotosLayout();
 
-        Div content = new Div(propertyGrid, imageScroller);
+        configurePropertyGrid();
+        configureImageGrid();
+        configureTitle();
+
+        Div content = new Div(propertyGrid, imageGrid);
         content.addClassName("room-content");
         content.setSizeFull();
         add(title, content);
-
     }
 
-    private void configureRoomPhotosLayout() {
-        roomPhotos.setSizeFull();
-        roomPhotos.setPadding(false);
+    private void configureImageGrid() {
+        imageGrid.addClassName("image-grid");
+        imageGrid.addComponentColumn(image -> image);
+        imageGrid.setSelectionMode(Grid.SelectionMode.NONE);
+        imageGrid.setSizeFull();
     }
 
-    private void configureImageScroller() {
-        imageScroller.addClassName("scroller");
-        imageScroller.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
-        imageScroller.setSizeFull();
-        imageScroller.setContent(roomPhotos);
+    private void updateImageGrid() {
+        List<Image> images = new ArrayList<>();
+        room.getPhotos().forEach(url -> images.add(new Image(url.toString(), "Photo Not Found")));
+        images.forEach(Image::setWidthFull);
+//        images.forEach(image -> image.setHeight("-1"));
+        images.forEach(image -> image.addClickListener(event -> {
+                getUI().get().getPage().open(event.getSource().getSrc(), "_blank");
+            }));
+        imageGrid.setItems(images);
+    }
+
+    private void configureTitle() {
+        title.setClassName("room-heading");
     }
 
     private void configurePropertyGrid() {
@@ -56,18 +63,6 @@ public class RoomView extends VerticalLayout {
                 GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
     }
 
-    private void addPhotosToView() {
-        for (URL url : room.getPhotos()) {
-            Image image = new Image(url.toString(), "Photo not found.");
-            image.setWidthFull();
-            image.setHeight("-1");
-            image.addClickListener(event -> {
-                getUI().get().getPage().open(event.getSource().getSrc(), "_blank");
-            });
-            roomPhotos.addAndExpand(image);
-        }
-    }
-
     public void setRoom(Room room) {
         this.room = room;
         if (room != null) {
@@ -76,9 +71,9 @@ public class RoomView extends VerticalLayout {
                     + room.getRoomType()
                     + " (" + room.getRoomType().getDescription() + ")");
             propertyGrid.setItems(bindRoomProperties());
-            addPhotosToView();
+            updateImageGrid();
         } else {
-            roomPhotos.removeAll(); // Clear images when RoomView is closed
+            ; // Clear images when RoomView is closed
         }
     }
 

@@ -1,9 +1,12 @@
 /* List view */
 .list-view .content {
     display: flex;
+    flex: 4;
 }
 
-.list-view .room-type-filter {
+.list-view .all-content {
+    display: flex;
+    flex-direction: column;
 }
 
 .list-view .room-grid {
@@ -12,24 +15,33 @@
 
 .list-view .room-view-form {
     flex: 3;
-    padding: var(--lumo-space-m);
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.list-view .clear-filters-btn {
+    margin-top: 2.5em;
 }
 
 .room-view-form .room-content {
     display: flex;
     flex-direction: row;
-    overflow: hidden;
 }
 
 .room-view-form .properties {
-    flex: 4;
+    flex: 5;
 }
 
-.room-view-form .scroller {
-    flex: 3;
+.room-view-form .room-heading {
+    margin-top: 20px;
+}
+
+.room-view-form .image-grid {
+    flex: 2;
     margin-top: 0;
     padding-left: var(--lumo-space-m);
     padding-right: var(--lumo-space-m);
+    overflow: auto;
 }
 
 @media all and (max-width: 1100px) {

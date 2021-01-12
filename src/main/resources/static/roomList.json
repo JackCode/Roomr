@@ -1,0 +1,39 @@
+[{
+  "roomNumber" : 203,
+  "roomType" : "K1",
+  "bathroom" : {
+    "bathroomType" : "SEPARATE_BATH_AND_SHOWER",
+    "numberOfSinks" : 2,
+    "numberOfShowerHeads" : 2,
+    "hasTv" : true
+  },
+  "squareFootage" : 250,
+  "hasFireplace" : true,
+  "hasBuiltInDrawers" : false,
+  "hasSofa" : false,
+  "hasSkylight" : false,
+  "hasBalcony" : true,
+  "connectingRooms" : [ 201, 205 ],
+  "facing" : [ "VINE", "SIXTH" ],
+  "photos" : [ "https://cvgcc.s3.us-east-2.amazonaws.com/roomImages/203/1.jpg", "https://cvgcc.s3.us-east-2.amazonaws.com/roomImages/203/2.jpg", "https://cvgcc.s3.us-east-2.amazonaws.com/roomImages/203/3.jpg", "https://cvgcc.s3.us-east-2.amazonaws.com/roomImages/203/4.jpg" ]
+},
+
+{
+  "roomNumber" : 205,
+  "roomType" : "Q2",
+  "bathroom" : {
+    "bathroomType" : "BATH_SHOWER_COMBO",
+    "numberOfSinks" : 2,
+    "numberOfShowerHeads" : 2,
+    "hasTv" : false
+  },
+  "squareFootage" : 500,
+  "hasFireplace" : false,
+  "hasBuiltInDrawers" : false,
+  "hasSofa" : true,
+  "hasSkylight" : false,
+  "hasBalcony" : false,
+  "connectingRooms" : [ 201, 203 ],
+  "facing" : [ "ALLEY" ],
+  "photos" : [ "https://images.freeimages.com/images/large-previews/ce3/two-beds-1226735.jpg", "https://images.freeimages.com/images/large-previews/eae/roomz-5-1231926.jpg", "https://images.freeimages.com/images/large-previews/95c/fitness-series-3-1467454.jpg", "https://images.freeimages.com/images/large-previews/7f3/meeting-room-3-1239345.jpg" ]
+}]

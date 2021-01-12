@@ -1,5 +1,6 @@
 package com.jackcode.Roomr.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -16,10 +17,12 @@ public class Room extends AbstractEntity implements Cloneable, Serializable {
 
     @NotNull
     private Integer roomNumber;
+
+    @JsonIgnore
     private Integer floor;
     private RoomType roomType;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bathroom_id")
     private Bathroom bathroom;
 

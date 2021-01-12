@@ -1,4 +1,4 @@
-package com.jackcode.Roomr.ui;
+package com.jackcode.Roomr.ui.mainView;
 
 import com.jackcode.Roomr.backend.model.Bathroom;
 import com.jackcode.Roomr.backend.model.Facing;
@@ -7,9 +7,8 @@ import com.jackcode.Roomr.backend.model.RoomType;
 import com.jackcode.Roomr.backend.service.RoomService;
 import com.jackcode.Roomr.ui.roomView.RoomView;
 import com.vaadin.flow.component.accordion.Accordion;
-import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -23,10 +22,9 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-@Route("cvgcc")
+@Route("")
 @CssImport("./styles/shared-styles.css")
 public class MainView extends VerticalLayout {
 
@@ -35,7 +33,6 @@ public class MainView extends VerticalLayout {
     private final RoomView roomView;
     private final Accordion filterAccordion = new Accordion();
     private final HorizontalLayout filterLayout = new HorizontalLayout();
-
     private FormLayout filterForm = new FormLayout();
 
     // Filter Components
@@ -51,35 +48,62 @@ public class MainView extends VerticalLayout {
     CheckboxGroup<String> sofaFilter = new CheckboxGroup();
     CheckboxGroup<Integer> showerHeadFilter = new CheckboxGroup();
     CheckboxGroup<String> facingFilter = new CheckboxGroup<>();
-
-    // Backend Components
-    private final RoomService roomService;
+    CheckboxGroup<Integer> floorFilter = new CheckboxGroup<>();
+    Button clearFiltersButton = new Button("Clear Filters");
 
     public MainView(RoomService roomService) {
-        this.roomService = roomService;
+        // Backend Components
         addClassName("list-view");
         setSizeFull();
 
         roomList = roomService.findAll();
         dataProvider = new ListDataProvider<>(roomList);
-        configureFilterComponents();
 
+        configureFilterComponents();
         configureRoomGrid();
         configureFilterAccordion();
+        configureClearFiltersButton();
 
         roomView = new RoomView();
+        roomView.setSizeFull();
+
         Div content = new Div(roomGrid, roomView);
         content.addClassName("content");
         content.setSizeFull();
+        content.setMaxHeight("600px");
 
+        HorizontalLayout topFilters = new HorizontalLayout(roomNumberFilter, roomTypeFilter, clearFiltersButton);
 
-        add(roomNumberFilter, filterAccordion, content);
+        Div allContent = new Div(topFilters, filterAccordion, content);
+        allContent.addClassName("all-content");
+        allContent.setSizeFull();
+
+        add(allContent);
 
         closeRoomView();
     }
 
+    private void configureClearFiltersButton() {
+        clearFiltersButton.setClassName("clear-filters-btn");
+        clearFiltersButton.addClickListener(e -> clearFilters());
+    }
+
+    private void clearFilters() {
+        roomNumberFilter.clear();
+        fireplaceFilter.clear();
+        balconyFilter.clear();
+        skylightFilter.clear();
+        showerHeadFilter.clear();
+        sofaFilter.clear();
+        tvInBathroomFilter.clear();
+        roomTypeFilter.clear();
+        facingFilter.clear();
+        bathroomTypeFilter.clear();
+        floorFilter.clear();
+    }
+
     private void configureFilterAccordion() {
-        filterAccordion.add("Filters", filterForm);
+        filterAccordion.add("Additional Filters", filterForm);
         filterAccordion.close();
     }
 
@@ -144,6 +168,11 @@ public class MainView extends VerticalLayout {
         facingFilter.setItems(facingTypes);
         facingFilter.addValueChangeListener(e -> applyFilter());
 
+        // Floor Filter
+        floorFilter.setLabel("Floor");
+        floorFilter.setItems(2, 3, 4, 5, 6, 7, 8);
+        floorFilter.addValueChangeListener(e -> applyFilter());
+
         filterForm.add(
                 fireplaceFilter,
                 balconyFilter,
@@ -151,9 +180,9 @@ public class MainView extends VerticalLayout {
                 showerHeadFilter,
                 sofaFilter,
                 tvInBathroomFilter,
-                roomTypeFilter,
                 facingFilter,
-                bathroomTypeFilter);
+                bathroomTypeFilter,
+                floorFilter);
 
         filterForm.setResponsiveSteps(
                 new FormLayout.ResponsiveStep("0em", 1),
@@ -166,9 +195,9 @@ public class MainView extends VerticalLayout {
                 new FormLayout.ResponsiveStep("40em", 8)
         );
 
-        filterForm.setColspan(roomTypeFilter, 5);
         filterForm.setColspan(facingFilter, 2);
-        filterForm.setColspan(bathroomTypeFilter, 8);
+        filterForm.setColspan(bathroomTypeFilter, 4);
+        filterForm.setColspan(floorFilter, 3);
     }
 
     private void configureRoomGrid() {
@@ -204,7 +233,6 @@ public class MainView extends VerticalLayout {
         if (room == null) {
             closeRoomView();
         } else {
-            filterAccordion.close();
             this.removeColumns();  // Use to remove columns when room view form opens
             roomView.setRoom(room);
             roomView.setVisible(true);
@@ -321,6 +349,13 @@ public class MainView extends VerticalLayout {
               }
               return false;
             });
+        }
+
+        // Floor Filter
+        if (!floorFilter.getValue().isEmpty()) {
+            dataProvider.addFilter(room ->
+                    floorFilter.getValue().contains(room.getFloor())
+            );
         }
     }
 }
