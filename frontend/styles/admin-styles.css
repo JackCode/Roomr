@@ -1,0 +1,19 @@
+.entry-view .content {
+    display: flex;
+}
+
+.entry-view .room-grid {
+    flex: 1;
+}
+
+.entry-view .room-form {
+    flex: 4;
+    padding: var(--lumo-space-m);
+}
+
+@media all and (max-width: 1100px) {
+    .entry-view.editing .toolbar,
+    .list-view.editing .room-grid {
+        display: none;
+    }
+}

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
@@ -20,32 +18,45 @@ public class Room extends AbstractEntity implements Cloneable, Serializable {
 
     @JsonIgnore
     private Integer floor;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
     private RoomType roomType;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bathroom_id")
-    private Bathroom bathroom;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private BathroomType bathroomType;
 
+    @NotNull
+    private Integer numberOfSinks;
+    @NotNull
+    private Integer numberOfShowerHeads;
+    @NotNull
     private Integer squareFootage;
+    @NotNull
     private Boolean hasFireplace;
+    @NotNull
     private Boolean hasBuiltInDrawers;
+    @NotNull
     private Boolean hasSofa;
+    @NotNull
     private Boolean hasSkylight;
+    @NotNull
     private Boolean hasBalcony;
+    @NotNull
+    private Boolean hasTvInBathroom;
 
     public Room() {
     }
 
-    @ElementCollection(targetClass = Integer.class)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private Set<Integer> connectingRooms;
+    private String connectingRooms;
 
     @ElementCollection(targetClass = Facing.class)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Facing> facing;
 
-    @ElementCollection(targetClass = URL.class, fetch = FetchType.EAGER)
-    private List<URL> photos;
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    private List<String> photos;
 
     private void setFloor() {
         this.floor = (this.roomNumber / 10) / 10;
@@ -66,14 +77,6 @@ public class Room extends AbstractEntity implements Cloneable, Serializable {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
-    }
-
-    public Bathroom getBathroom() {
-        return bathroom;
-    }
-
-    public void setBathroom(Bathroom bathroom) {
-        this.bathroom = bathroom;
     }
 
     public Integer getSquareFootage() {
@@ -124,11 +127,11 @@ public class Room extends AbstractEntity implements Cloneable, Serializable {
         this.hasBalcony = hasBalcony;
     }
 
-    public Set<Integer> getConnectingRooms() {
+    public String getConnectingRooms() {
         return connectingRooms;
     }
 
-    public void setConnectingRooms(Set<Integer> connectingRooms) {
+    public void setConnectingRooms(String connectingRooms) {
         this.connectingRooms = connectingRooms;
     }
 
@@ -140,16 +143,48 @@ public class Room extends AbstractEntity implements Cloneable, Serializable {
         this.facing = facing;
     }
 
-    public List<URL> getPhotos() {
+    public List<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<URL> photos) {
+    public void setPhotos(List<String> photos) {
         this.photos = photos;
     }
 
     public Integer getFloor() {
         return floor;
+    }
+
+    public BathroomType getBathroomType() {
+        return bathroomType;
+    }
+
+    public void setBathroomType(BathroomType bathroomType) {
+        this.bathroomType = bathroomType;
+    }
+
+    public Integer getNumberOfSinks() {
+        return numberOfSinks;
+    }
+
+    public void setNumberOfSinks(Integer numberOfSinks) {
+        this.numberOfSinks = numberOfSinks;
+    }
+
+    public Integer getNumberOfShowerHeads() {
+        return numberOfShowerHeads;
+    }
+
+    public void setNumberOfShowerHeads(Integer numberOfShowerHeads) {
+        this.numberOfShowerHeads = numberOfShowerHeads;
+    }
+
+    public Boolean getHasTvInBathroom() {
+        return hasTvInBathroom;
+    }
+
+    public void setHasTvInBathroom(Boolean hasTvInBathroom) {
+        this.hasTvInBathroom = hasTvInBathroom;
     }
 
     @Override

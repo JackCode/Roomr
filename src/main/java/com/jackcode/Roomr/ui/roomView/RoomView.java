@@ -1,6 +1,5 @@
 package com.jackcode.Roomr.ui.roomView;
 
-import com.jackcode.Roomr.backend.model.Bathroom;
 import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;
 import com.vaadin.flow.component.grid.Grid;
@@ -81,22 +80,25 @@ public class RoomView extends VerticalLayout {
         List<RoomProperty> boundedProperties = new ArrayList<>();
 
         if (room != null) {
-            Bathroom bRoom = room.getBathroom();
-            boundedProperties.add(new RoomProperty("Floor", room.getFloor().toString()));
-            boundedProperties.add(new RoomProperty("Square Footage", room.getSquareFootage().toString()));
-            boundedProperties.add(new RoomProperty("Fireplace", room.getHasFireplace() ? "Yes" : "No"));
-            boundedProperties.add(new RoomProperty("Bathroom Style", bRoom.getBathroomType().getDescription()));
-            boundedProperties.add(new RoomProperty("Number of Sinks", bRoom.getNumberOfSinks().toString()));
-            boundedProperties.add((new RoomProperty("Number of Shower Heads",
-                    bRoom.getNumberOfShowerHeads().toString())));
-            boundedProperties.add(new RoomProperty("TV in Bathroom", bRoom.getHasTv() ? "Yes" : "No"));
-            boundedProperties.add(new RoomProperty("Connecting Rooms", getConnectingRoomsString()));
-            boundedProperties.add(new RoomProperty("Facing", getFacingString()));
-            boundedProperties.add(new RoomProperty("Balcony", room.getHasBalcony() ? "Yes" : "No"));
-            boundedProperties.add(new RoomProperty("Skylight", room.getHasSkylight() ? "Yes" : "No"));
-            boundedProperties.add(new RoomProperty("Sofa", room.getHasSofa() ? "Yes" : "No"));
-            boundedProperties.add(new RoomProperty("Built-in Drawers",
-                    room.getHasBuiltInDrawers() ? "Yes" : "No"));
+            try {
+                boundedProperties.add(new RoomProperty("Floor", room.getFloor().toString()));
+                boundedProperties.add(new RoomProperty("Square Footage", room.getSquareFootage().toString()));
+                boundedProperties.add(new RoomProperty("Fireplace", room.getHasFireplace() ? "Yes" : "No"));
+                boundedProperties.add(new RoomProperty("Bathroom Style", room.getBathroomType().getDescription()));
+                boundedProperties.add(new RoomProperty("Number of Sinks", room.getNumberOfSinks().toString()));
+                boundedProperties.add((new RoomProperty("Number of Shower Heads",
+                        room.getNumberOfShowerHeads().toString())));
+                boundedProperties.add(new RoomProperty("TV in Bathroom", room.getHasTvInBathroom() ? "Yes" : "No"));
+                boundedProperties.add(new RoomProperty("Connecting Rooms", room.getConnectingRooms()));
+                boundedProperties.add(new RoomProperty("Facing", getFacingString()));
+                boundedProperties.add(new RoomProperty("Balcony", room.getHasBalcony() ? "Yes" : "No"));
+                boundedProperties.add(new RoomProperty("Skylight", room.getHasSkylight() ? "Yes" : "No"));
+                boundedProperties.add(new RoomProperty("Sofa", room.getHasSofa() ? "Yes" : "No"));
+                boundedProperties.add(new RoomProperty("Built-in Drawers",
+                        room.getHasBuiltInDrawers() ? "Yes" : "No"));
+            } catch (NullPointerException ex) {
+
+            }
         } else {
             boundedProperties.add(new RoomProperty("No Properties Found", "-"));
         }
@@ -106,17 +108,9 @@ public class RoomView extends VerticalLayout {
     private String getFacingString() {
         StringBuffer facingString = new StringBuffer();
         for (Facing facing : room.getFacing()) {
-            facingString.append(facing.getDescription() + "; ");
+            facingString.append(facing.getDescription() + " ");
         }
         return facingString.toString();
     }
 
-    private String getConnectingRoomsString() {
-        StringBuffer connectingRoomsString = new StringBuffer();
-        for (Integer connectingRoom : room.getConnectingRooms()) {
-            connectingRoomsString.append(connectingRoom);
-            connectingRoomsString.append("; ");
-        }
-        return connectingRoomsString.toString();
-    }
 }

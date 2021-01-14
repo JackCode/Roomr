@@ -1,15 +1,15 @@
-package com.jackcode.Roomr.ui.mainView;
+package com.jackcode.Roomr.ui.listView;
 
-import com.jackcode.Roomr.backend.model.Bathroom;
+import com.jackcode.Roomr.backend.model.BathroomType;
 import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;
 import com.jackcode.Roomr.backend.model.RoomType;
 import com.jackcode.Roomr.backend.service.RoomService;
+import com.jackcode.Roomr.ui.MainLayout;
 import com.jackcode.Roomr.ui.roomView.RoomView;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -19,14 +19,15 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Route("")
-@CssImport("./styles/shared-styles.css")
-public class MainView extends VerticalLayout {
+@Route(value="", layout = MainLayout.class)
+@PageTitle("Roomr | List View")
+public class ListView extends VerticalLayout {
 
     // Visual Components
     private final Grid<Room> roomGrid = new Grid<>();
@@ -51,7 +52,7 @@ public class MainView extends VerticalLayout {
     CheckboxGroup<Integer> floorFilter = new CheckboxGroup<>();
     Button clearFiltersButton = new Button("Clear Filters");
 
-    public MainView(RoomService roomService) {
+    public ListView(RoomService roomService) {
         // Backend Components
         addClassName("list-view");
         setSizeFull();
@@ -128,7 +129,7 @@ public class MainView extends VerticalLayout {
         // Bathroom Type Filter
         bathroomTypeFilter.setLabel("Bathroom Style");
         List<String> bTypes = new ArrayList<>();
-        Bathroom.BathroomType.stream().forEach(type -> {
+        BathroomType.stream().forEach(type -> {
             bTypes.add(type.getDescription());
         });
         bathroomTypeFilter.setItems(bTypes);
@@ -213,13 +214,10 @@ public class MainView extends VerticalLayout {
         roomGrid.removeAllColumns();
         roomGrid.addColumn(Room::getRoomNumber).setHeader("Room Number");
         roomGrid.addColumn(Room::getRoomType).setHeader("Room Type");
-        roomGrid.addColumn(room -> {
-            Bathroom bathroom = room.getBathroom();
-            return bathroom == null ? "-" : bathroom.getBathroomType().getDescription();
-        }).setHeader("Bathroom Style");
+        roomGrid.addColumn(room -> room.getBathroomType().getDescription()).setHeader("Bathroom Type");
         roomGrid.addColumn(Room::getSquareFootage).setHeader("Square Footage");
-        roomGrid.addColumn(Room::getHasFireplace).setHeader("Has Fireplace");
-        roomGrid.addColumn(Room::getHasBalcony).setHeader("Has Balcony");
+        roomGrid.addColumn(room -> (room.getHasFireplace() ? "Yes" : "No")).setHeader("Fireplace");
+        roomGrid.addColumn(room -> (room.getHasBalcony() ? "Yes" : "No")).setHeader("Balcony");
         roomGrid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
@@ -262,9 +260,9 @@ public class MainView extends VerticalLayout {
                 !(tvInBathroomFilter.getValue().contains("Yes") && tvInBathroomFilter.getValue().contains("No"))) {
             dataProvider.addFilter(room -> {
                 if (tvInBathroomFilter.getValue().contains("Yes")) {
-                    return room.getBathroom().getHasTv();
+                    return room.getHasTvInBathroom();
                 } else {
-                    return !room.getBathroom().getHasTv();
+                    return !room.getHasTvInBathroom();
                 }
             });
         }
@@ -278,7 +276,7 @@ public class MainView extends VerticalLayout {
         if (!bathroomTypeFilter.getValue().isEmpty()) {
             dataProvider.addFilter(room -> bathroomTypeFilter
                     .getValue()
-                    .contains(room.getBathroom().getBathroomType().getDescription()));
+                    .contains(room.getBathroomType().getDescription()));
         }
 
         // Fireplace Filter
@@ -332,7 +330,7 @@ public class MainView extends VerticalLayout {
         // Showerhead Filter
         if (!showerHeadFilter.getValue().isEmpty()) {
             dataProvider.addFilter(room ->
-                showerHeadFilter.getValue().contains(room.getBathroom().getNumberOfShowerHeads())
+                showerHeadFilter.getValue().contains(room.getNumberOfShowerHeads())
             );
         }
 
