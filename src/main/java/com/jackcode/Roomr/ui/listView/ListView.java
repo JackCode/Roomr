@@ -6,7 +6,6 @@ import com.jackcode.Roomr.backend.model.Room;
 import com.jackcode.Roomr.backend.model.RoomType;
 import com.jackcode.Roomr.backend.service.RoomService;
 import com.jackcode.Roomr.ui.MainLayout;
-import com.jackcode.Roomr.ui.roomView.RoomView;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;

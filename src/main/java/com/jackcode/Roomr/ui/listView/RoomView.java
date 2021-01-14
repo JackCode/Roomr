@@ -1,4 +1,4 @@
-package com.jackcode.Roomr.ui.roomView;
+package com.jackcode.Roomr.ui.listView;
 
 import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;

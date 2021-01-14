@@ -18,8 +18,8 @@ import com.vaadin.flow.server.PWA;
 @PWA(name="Roomr",
         shortName = "Roomr",
         offlineResources = {
-        "./styles/offline.css",
-        "./images/offline.png"
+                "./styles/offline.css",
+                "./images/offline.png"
         })
 public class MainLayout extends AppLayout {
     public MainLayout() {

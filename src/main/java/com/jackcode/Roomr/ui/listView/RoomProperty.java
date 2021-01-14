@@ -1,4 +1,4 @@
-package com.jackcode.Roomr.ui.roomView;
+package com.jackcode.Roomr.ui.listView;
 
 public class RoomProperty {
     private String property;
