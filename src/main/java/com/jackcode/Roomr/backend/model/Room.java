@@ -1,17 +1,14 @@
 package com.jackcode.Roomr.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-@Entity
-public class Room extends AbstractEntity implements Cloneable, Serializable {
+@Document(collection = "rooms")
+public class Room extends AbstractDocument {
 
     @NotNull
     private Integer roomNumber;
@@ -19,11 +16,9 @@ public class Room extends AbstractEntity implements Cloneable, Serializable {
     @JsonIgnore
     private Integer floor;
 
-    @Enumerated(EnumType.STRING)
     @NotNull
     private RoomType roomType;
 
-    @Enumerated(EnumType.STRING)
     @NotNull
     private BathroomType bathroomType;
 
@@ -51,11 +46,8 @@ public class Room extends AbstractEntity implements Cloneable, Serializable {
 
     private String connectingRooms;
 
-    @ElementCollection(targetClass = Facing.class)
-    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Facing> facing;
 
-    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     private List<String> photos;
 
     private void setFloor() {
