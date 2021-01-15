@@ -24,11 +24,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
 
-        // TODO: Change this to retrieve roles from db
         UserDetails user = User.withUsername(appUser.getUsername())
                                 .password(appUser.getPassword())
-                                .roles("Admin", "User")
-                                .build();
+                                .roles(appUser.getRoles()).build();
         return user;
     }
 

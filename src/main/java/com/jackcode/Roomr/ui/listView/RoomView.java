@@ -2,12 +2,18 @@ package com.jackcode.Roomr.ui.listView;
 
 import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;
+import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.shared.Registration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +24,28 @@ public class RoomView extends VerticalLayout {
     private Grid<RoomProperty> propertyGrid = new Grid<>(RoomProperty.class);
     private Grid<Image> imageGrid = new Grid<>();
 
-
+    private Button closeButton = new Button("Close");
+    
     public RoomView() {
         addClassName("room-view-form");
 
         configurePropertyGrid();
         configureImageGrid();
         configureTitle();
+        configureCloseButton();
 
         Div content = new Div(propertyGrid, imageGrid);
         content.addClassName("room-content");
         content.setSizeFull();
-        add(title, content);
+
+        expand(title);
+        add(title, closeButton, content);
+    }
+
+    private void configureCloseButton() {
+        closeButton.addThemeVariants(ButtonVariant.LUMO_ICON);
+        closeButton.addClickShortcut(Key.ESCAPE);
+        closeButton.addClickListener(event -> fireEvent(new CloseEvent(this)));
     }
 
     private void configureImageGrid() {
@@ -111,6 +127,25 @@ public class RoomView extends VerticalLayout {
             facingString.append(facing.getDescription() + " ");
         }
         return facingString.toString();
+    }
+
+    public static abstract class RoomViewEvent extends ComponentEvent<RoomView> {
+
+        protected RoomViewEvent(RoomView source) {
+            super(source, false);
+        }
+    }
+    
+
+    public static class CloseEvent extends RoomView.RoomViewEvent {
+        CloseEvent(RoomView source) {
+            super(source);
+        }
+    }
+
+    public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
+                                                                  ComponentEventListener<T> listener) {
+        return getEventBus().addListener(eventType, listener);
     }
 
 }

@@ -5,7 +5,6 @@ import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;
 import com.jackcode.Roomr.backend.model.RoomType;
 import com.jackcode.Roomr.backend.service.RoomService;
-import com.jackcode.Roomr.security.ILAY.SecuredByRole;
 import com.jackcode.Roomr.ui.MainLayout;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
@@ -27,7 +26,6 @@ import java.util.List;
 
 @Route(value="", layout = MainLayout.class)
 @PageTitle("Roomr | List View")
-@SecuredByRole("ROLE_User")
 public class ListView extends VerticalLayout {
 
     // Visual Components
@@ -67,6 +65,7 @@ public class ListView extends VerticalLayout {
         configureClearFiltersButton();
 
         roomView = new RoomView();
+        roomView.addListener(RoomView.CloseEvent.class, e -> closeRoomView());
         roomView.setSizeFull();
 
         Div content = new Div(roomGrid, roomView);
@@ -74,7 +73,7 @@ public class ListView extends VerticalLayout {
         content.setSizeFull();
         content.setMaxHeight("600px");
 
-        HorizontalLayout topFilters = new HorizontalLayout(roomNumberFilter, roomTypeFilter, clearFiltersButton);
+        HorizontalLayout topFilters = new HorizontalLayout(roomNumberFilter, clearFiltersButton);
 
         Div allContent = new Div(topFilters, filterAccordion, content);
         allContent.addClassName("all-content");
@@ -84,6 +83,7 @@ public class ListView extends VerticalLayout {
 
         closeRoomView();
     }
+
 
     private void configureClearFiltersButton() {
         clearFiltersButton.setClassName("clear-filters-btn");
@@ -105,6 +105,7 @@ public class ListView extends VerticalLayout {
     }
 
     private void configureFilterAccordion() {
+        filterAccordion.add("Room Type", roomTypeFilter);
         filterAccordion.add("Additional Filters", filterForm);
         filterAccordion.close();
     }
