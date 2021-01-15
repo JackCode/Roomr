@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         // TODO: Change this to retrieve roles from db
         UserDetails user = User.withUsername(appUser.getUsername())
                                 .password(appUser.getPassword())
-                                .roles("Admin", "User")
+                                .roles(appUser.getRoles())
                                 .build();
         return user;
     }
