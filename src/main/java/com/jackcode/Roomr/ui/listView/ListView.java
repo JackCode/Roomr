@@ -5,6 +5,7 @@ import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;
 import com.jackcode.Roomr.backend.model.RoomType;
 import com.jackcode.Roomr.backend.service.RoomService;
+import com.jackcode.Roomr.security.ILAY.SecuredByRole;
 import com.jackcode.Roomr.ui.MainLayout;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
@@ -26,6 +27,7 @@ import java.util.List;
 
 @Route(value="", layout = MainLayout.class)
 @PageTitle("Roomr | List View")
+@SecuredByRole("ROLE_User")
 public class ListView extends VerticalLayout {
 
     // Visual Components

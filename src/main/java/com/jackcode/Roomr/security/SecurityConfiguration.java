@@ -38,13 +38,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        UserDetails user =
+        UserDetails normalUser =
                 User.withUsername("user")
                 .password("{noop}Password")
-                .roles("USER")
+                .roles("User")
                 .build();
 
-        return new InMemoryUserDetailsManager(user);
+        UserDetails adminUser =
+                User.withUsername("admin")
+                .password("{noop}AJMcalpine95!")
+                .roles("User", "Admin")
+                .build();
+
+        return new InMemoryUserDetailsManager(normalUser, adminUser);
     }
 
     @Override
@@ -59,6 +65,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/icons/**",
                 "/images/**",
                 "/styles/**",
-                "/h2-console/**");
+                "/h2-console/**",
+
+                // TODO: Remove from production code
+                "/frontend/**",
+                "/webjars/**",
+
+                "/frontend-es5/**", "/frontend-es6/**");
     }
 }
