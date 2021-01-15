@@ -6,11 +6,9 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.security.access.annotation.Secured;
 
 @Route("login")
 @PageTitle("Login | Roomr")
-@Secured("ROLE_Admin")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     private LoginOverlay login = new LoginOverlay();
