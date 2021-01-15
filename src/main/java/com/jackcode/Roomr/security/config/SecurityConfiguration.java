@@ -1,23 +1,31 @@
-package com.jackcode.Roomr.security;
+package com.jackcode.Roomr.security.config;
 
+import com.jackcode.Roomr.security.CustomRequestCache;
+import com.jackcode.Roomr.security.CustomUserDetailsService;
+import com.jackcode.Roomr.security.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity
 @Configuration
+@EnableConfigurationProperties
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_PROCESSING_URL = "/login";
     private static final String LOGIN_FAILURE_URL = "/login?error";
     private static final String LOGIN_URL = "/login";
     private static final String LOGOUT_SUCCESS_URL = "/login";
+
+    @Autowired
+    CustomUserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,19 +46,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        UserDetails normalUser =
-                User.withUsername("user")
-                .password("{noop}Password")
-                .roles("User")
-                .build();
+        return new CustomUserDetailsService();
+    }
 
-        UserDetails adminUser =
-                User.withUsername("admin")
-                .password("{noop}AJMcalpine95!")
-                .roles("User", "Admin")
-                .build();
-
-        return new InMemoryUserDetailsManager(normalUser, adminUser);
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -72,5 +73,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/webjars/**",
 
                 "/frontend-es5/**", "/frontend-es6/**");
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userDetailsService);
     }
 }
