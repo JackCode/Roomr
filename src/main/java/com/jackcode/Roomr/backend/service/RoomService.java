@@ -27,7 +27,7 @@ public class RoomService {
     }
 
     public List<Room> findAll(String roomNumber) {
-        if (roomNumber == null || roomNumber.isEmpty()) {
+        if (roomNumber == null || roomNumber == "null" || roomNumber.isEmpty()) {
             return this.roomRepository.findAll();
         } else {
             return roomRepository.findAll(roomNumber);

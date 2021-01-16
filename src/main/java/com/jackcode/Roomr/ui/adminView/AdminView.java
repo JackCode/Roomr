@@ -10,7 +10,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -24,7 +24,7 @@ public class AdminView extends VerticalLayout {
 
     private final RoomService roomService;
     private final Grid<Room> roomGrid = new Grid<>(Room.class);
-    private final TextField roomFilter = new TextField();
+    private final IntegerField roomFilter = new IntegerField();
     private RoomForm form;
 
     @Autowired
@@ -60,7 +60,7 @@ public class AdminView extends VerticalLayout {
     }
 
     private void updateList() {
-        roomGrid.setItems(roomService.findAll(roomFilter.getValue()));
+        roomGrid.setItems(roomService.findAll(String.valueOf(roomFilter.getValue())));
     }
 
     public void editRoom(Room room) {
