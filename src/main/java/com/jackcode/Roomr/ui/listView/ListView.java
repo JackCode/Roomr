@@ -7,12 +7,14 @@ import com.jackcode.Roomr.backend.model.RoomType;
 import com.jackcode.Roomr.backend.service.RoomService;
 import com.jackcode.Roomr.ui.MainLayout;
 import com.vaadin.flow.component.accordion.Accordion;
+import com.vaadin.flow.component.accordion.AccordionPanel;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -31,9 +33,11 @@ public class ListView extends VerticalLayout {
     // Visual Components
     private final Grid<Room> roomGrid = new Grid<>();
     private final RoomView roomView;
-    private final Accordion filterAccordion = new Accordion();
-    private final HorizontalLayout filterLayout = new HorizontalLayout();
+    private final AccordionPanel filterAccordion = new AccordionPanel();
+    private final Accordion subFilterAccordion = new Accordion();
+    private final HorizontalLayout topFilters;
     private FormLayout filterForm = new FormLayout();
+
 
     // Filter Components
     ListDataProvider<Room> dataProvider;
@@ -60,6 +64,9 @@ public class ListView extends VerticalLayout {
         roomList = roomService.findAll();
         dataProvider = new ListDataProvider<>(roomList);
 
+
+        topFilters = new HorizontalLayout(roomNumberFilter, clearFiltersButton);
+
         configureFilterComponents();
         configureRoomGrid();
         configureFilterAccordion();
@@ -74,9 +81,8 @@ public class ListView extends VerticalLayout {
         content.setSizeFull();
         content.setMaxHeight("600px");
 
-        HorizontalLayout topFilters = new HorizontalLayout(roomNumberFilter, clearFiltersButton);
 
-        Div allContent = new Div(topFilters, filterAccordion, content);
+        Div allContent = new Div(filterAccordion, content);
         allContent.addClassName("all-content");
         allContent.setSizeFull();
 
@@ -107,9 +113,11 @@ public class ListView extends VerticalLayout {
     }
 
     private void configureFilterAccordion() {
-        filterAccordion.add("Room Type", roomTypeFilter);
-        filterAccordion.add("Additional Filters", filterForm);
-        filterAccordion.close();
+        subFilterAccordion.add("Room Type", roomTypeFilter);
+        subFilterAccordion.add("Additional Filters", filterForm);
+        subFilterAccordion.close();
+        filterAccordion.setSummary(new Label("Filters"));
+        filterAccordion.addContent(topFilters, subFilterAccordion);
     }
 
     private void configureFilterComponents() {
@@ -187,28 +195,31 @@ public class ListView extends VerticalLayout {
                 fireplaceFilter,
                 balconyFilter,
                 skylightFilter,
-                showerHeadFilter,
                 sofaFilter,
                 bodyShowerFilter,
                 tvInBathroomFilter,
+                showerHeadFilter,
                 facingFilter,
-                bathroomTypeFilter,
-                floorFilter);
+                floorFilter,
+                bathroomTypeFilter);
 
         filterForm.setResponsiveSteps(
                 new FormLayout.ResponsiveStep("0em", 1),
-                new FormLayout.ResponsiveStep("40em", 2),
-                new FormLayout.ResponsiveStep("40em", 3),
-                new FormLayout.ResponsiveStep("40em", 4),
-                new FormLayout.ResponsiveStep("40em", 5),
-                new FormLayout.ResponsiveStep("40em", 6),
-                new FormLayout.ResponsiveStep("40em", 7),
-                new FormLayout.ResponsiveStep("40em", 8)
+                new FormLayout.ResponsiveStep("0em", 2),
+                new FormLayout.ResponsiveStep("0em", 3),
+                new FormLayout.ResponsiveStep("0em", 4),
+                new FormLayout.ResponsiveStep("0em", 5),
+                new FormLayout.ResponsiveStep("0em", 6),
+                new FormLayout.ResponsiveStep("0em", 7),
+                new FormLayout.ResponsiveStep("0em", 8),
+                new FormLayout.ResponsiveStep("0em", 9)
         );
 
+        filterForm.setColspan(showerHeadFilter, 2);
         filterForm.setColspan(facingFilter, 2);
-        filterForm.setColspan(bathroomTypeFilter, 4);
         filterForm.setColspan(floorFilter, 3);
+        filterForm.setColspan(bathroomTypeFilter, 3);
+
     }
 
     private void configureRoomGrid() {
