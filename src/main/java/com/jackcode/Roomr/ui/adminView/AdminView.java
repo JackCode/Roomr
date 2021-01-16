@@ -99,6 +99,7 @@ public class AdminView extends VerticalLayout {
 
         Button addRoomButton = new Button("Add Room");
         addRoomButton.addClickListener(click -> addRoom());
+        addRoomButton.setEnabled(false);
 
         HorizontalLayout toolbar = new HorizontalLayout(roomFilter, addRoomButton);
         toolbar.addClassName("toolbar");
