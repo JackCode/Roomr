@@ -30,7 +30,7 @@ public class RoomService {
         if (roomNumber == null || roomNumber.isEmpty()) {
             return this.roomRepository.findAll();
         } else {
-            return roomRepository.findAll();
+            return roomRepository.findAll(roomNumber);
         }
     }
 
