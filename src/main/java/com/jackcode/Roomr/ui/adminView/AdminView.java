@@ -22,9 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SecuredByRole("ROLE_Admin")
 public class AdminView extends VerticalLayout {
 
-    private RoomService roomService;
-    private Grid<Room> roomGrid = new Grid<>(Room.class);
-    private TextField roomFilter = new TextField();
+    private final RoomService roomService;
+    private final Grid<Room> roomGrid = new Grid<>(Room.class);
+    private final TextField roomFilter = new TextField();
     private RoomForm form;
 
     @Autowired

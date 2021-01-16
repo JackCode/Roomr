@@ -2,6 +2,8 @@ package com.jackcode.Roomr.backend.service;
 
 import com.jackcode.Roomr.backend.model.Room;
 import com.jackcode.Roomr.backend.repository.RoomRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,9 @@ public class RoomService {
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
     private final RoomRepository roomRepository;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
@@ -21,8 +26,8 @@ public class RoomService {
         return this.roomRepository.findAll();
     }
 
-    public List<Room> findAll(String roomNumberSearch) {
-        if (roomNumberSearch == null || roomNumberSearch.isEmpty()) {
+    public List<Room> findAll(String roomNumber) {
+        if (roomNumber == null || roomNumber.isEmpty()) {
             return this.roomRepository.findAll();
         } else {
             return roomRepository.findAll();

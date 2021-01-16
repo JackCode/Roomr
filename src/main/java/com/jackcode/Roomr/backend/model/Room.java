@@ -10,8 +10,7 @@ import java.util.Set;
 @Document(collection = "rooms")
 public class Room extends AbstractDocument {
 
-    @NotNull
-    private Integer roomNumber;
+    private @NotNull String roomNumber;
 
     @JsonIgnore
     private Integer floor;
@@ -51,14 +50,14 @@ public class Room extends AbstractDocument {
     private List<String> photos;
 
     private void setFloor() {
-        this.floor = (this.roomNumber / 10) / 10;
+        this.floor = (Integer.valueOf(roomNumber) / 10) / 10;
     }
 
-    public Integer getRoomNumber() {
+    public @NotNull String getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(Integer roomNumber) {
+    public void setRoomNumber(@NotNull String roomNumber) {
         this.roomNumber = roomNumber;
         this.setFloor();
     }

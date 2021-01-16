@@ -46,13 +46,14 @@ public class RoomForm extends FormLayout {
 
     public RoomForm() {
         addClassName("room-form");
+
+        configureBinder();
+        configureMultivalueFields();
+
         binder.bindInstanceFields(this);
         setResponsiveSteps(new ResponsiveStep("40em", 1));
         setResponsiveSteps(new ResponsiveStep("40em", 2));
         setResponsiveSteps(new ResponsiveStep("40em", 3));
-
-        configureBinder();
-        configureMultivalueFields();
 
         add(roomNumber,
                 roomType,
@@ -107,7 +108,9 @@ public class RoomForm extends FormLayout {
     }
 
     private void configureBinder() {
-
+        binder.forField(roomNumber)
+                .bind(roomData -> Integer.valueOf(roomData.getRoomNumber()),
+                        (roomData, formValue) -> roomData.setRoomNumber(String.valueOf(formValue)));
     }
 
     private void configureMultivalueFields() {
