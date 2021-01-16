@@ -20,6 +20,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import de.codecamp.vaadin.components.messagedialog.MessageDialog;
 
 public class RoomForm extends FormLayout {
     IntegerField roomNumber = new IntegerField("Room Number");
@@ -82,13 +83,24 @@ public class RoomForm extends FormLayout {
         close.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, room)));
+        delete.addClickListener(event -> confirmAndDelete());
         close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
         save.setEnabled(false);
 
         binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
         return new HorizontalLayout(save, delete, close);
+    }
+
+    private void confirmAndDelete() {
+        MessageDialog messageDialog = new MessageDialog().setTitle(
+                "Delete Room " + room.getRoomNumber())
+                .setMessage("Are you sure you want to delete room " + room.getRoomNumber() + "?");
+        messageDialog.addButton().text("Delete")
+                .onClick(e -> fireEvent(new DeleteEvent(this, room)))
+                .closeOnClick();
+        messageDialog.addButton().text("Cancel").closeOnClick();
+        messageDialog.open();
     }
 
     private void validateAndSave() {

@@ -163,6 +163,11 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>de.codecamp.vaadin</groupId>
+            <artifactId>vaadin-message-dialog</artifactId>
+            <version>1.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
