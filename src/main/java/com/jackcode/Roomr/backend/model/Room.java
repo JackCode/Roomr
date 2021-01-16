@@ -10,7 +10,11 @@ import java.util.Set;
 @Document(collection = "rooms")
 public class Room extends AbstractDocument {
 
-    private @NotNull String roomNumber;
+    private @NotNull
+    String roomNumber;
+
+    @NotNull
+    private String notes;
 
     @JsonIgnore
     private Integer floor;
@@ -39,6 +43,8 @@ public class Room extends AbstractDocument {
     private Boolean hasBalcony;
     @NotNull
     private Boolean hasTvInBathroom;
+    @NotNull
+    private Boolean hasBodyShower;
 
     public Room() {
     }
@@ -176,6 +182,22 @@ public class Room extends AbstractDocument {
 
     public void setHasTvInBathroom(Boolean hasTvInBathroom) {
         this.hasTvInBathroom = hasTvInBathroom;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Boolean getHasBodyShower() {
+        return hasBodyShower;
+    }
+
+    public void setHasBodyShower(Boolean hasBodyShower) {
+        this.hasBodyShower = hasBodyShower;
     }
 
     @Override

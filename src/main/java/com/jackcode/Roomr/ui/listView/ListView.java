@@ -46,6 +46,7 @@ public class ListView extends VerticalLayout {
     CheckboxGroup<String> balconyFilter = new CheckboxGroup();
     CheckboxGroup<String> skylightFilter = new CheckboxGroup();
     CheckboxGroup<String> sofaFilter = new CheckboxGroup();
+    CheckboxGroup<String> bodyShowerFilter = new CheckboxGroup();
     CheckboxGroup<Integer> showerHeadFilter = new CheckboxGroup();
     CheckboxGroup<String> facingFilter = new CheckboxGroup<>();
     CheckboxGroup<Integer> floorFilter = new CheckboxGroup<>();
@@ -102,6 +103,7 @@ public class ListView extends VerticalLayout {
         facingFilter.clear();
         bathroomTypeFilter.clear();
         floorFilter.clear();
+        bodyShowerFilter.clear();
     }
 
     private void configureFilterAccordion() {
@@ -157,9 +159,14 @@ public class ListView extends VerticalLayout {
         sofaFilter.setItems("Yes", "No");
         sofaFilter.addValueChangeListener(e -> applyFilter());
 
+        // Body Shower Filter
+        bodyShowerFilter.setLabel("Shower - Body Sprayer");
+        bodyShowerFilter.setItems("Yes", "No");
+        bodyShowerFilter.addValueChangeListener(e -> applyFilter());
+
         // Showerhead Filter
         showerHeadFilter.setLabel("Shower Heads");
-        showerHeadFilter.setItems(1, 2);
+        showerHeadFilter.setItems(1, 2, 3);
         showerHeadFilter.addValueChangeListener(e -> applyFilter());
 
         // Facing Filter
@@ -182,6 +189,7 @@ public class ListView extends VerticalLayout {
                 skylightFilter,
                 showerHeadFilter,
                 sofaFilter,
+                bodyShowerFilter,
                 tvInBathroomFilter,
                 facingFilter,
                 bathroomTypeFilter,
@@ -325,6 +333,18 @@ public class ListView extends VerticalLayout {
                     return room.getHasSofa();
                 } else {
                     return !room.getHasSofa();
+                }
+            });
+        }
+
+        // Sofa Filter
+        if (!bodyShowerFilter.getValue().isEmpty() &&
+                !(bodyShowerFilter.getValue().contains("Yes") && bodyShowerFilter.getValue().contains("No"))) {
+            dataProvider.addFilter(room -> {
+                if (bodyShowerFilter.getValue().contains("Yes")) {
+                    return room.getHasBodyShower();
+                } else {
+                    return !room.getHasBodyShower();
                 }
             });
         }

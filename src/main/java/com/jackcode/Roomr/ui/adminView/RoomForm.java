@@ -35,8 +35,10 @@ public class RoomForm extends FormLayout {
     Checkbox hasSofa = new Checkbox("Sofa");
     Checkbox hasSkylight = new Checkbox("Skylight");
     Checkbox hasBalcony = new Checkbox("Balcony");
+    Checkbox hasBodyShower = new Checkbox("Shower - Body Sprayer");
     CheckboxGroup<Facing> facing = new CheckboxGroup<>();
     TextField connectingRooms = new TextField("Connecting Rooms");
+    TextField notes = new TextField("Notes");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -65,11 +67,13 @@ public class RoomForm extends FormLayout {
                 hasSkylight,
                 hasBalcony,
                 hasTvInBathroom,
+                hasBodyShower,
                 bathroomType,
                 numberOfSinks,
                 numberOfShowerHeads,
                 facing,
                 connectingRooms,
+                notes,
                 createButtonsLayout());
         getChildren().forEach(child -> this.setColspan(child, 1));
     }

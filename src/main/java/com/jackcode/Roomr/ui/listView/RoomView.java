@@ -104,6 +104,8 @@ public class RoomView extends VerticalLayout {
                 boundedProperties.add(new RoomProperty("Number of Sinks", room.getNumberOfSinks().toString()));
                 boundedProperties.add((new RoomProperty("Number of Shower Heads",
                         room.getNumberOfShowerHeads().toString())));
+                boundedProperties.add(new RoomProperty("Shower - Body Sprayer",
+                        room.getHasBodyShower() ? "Yes" : "No"));
                 boundedProperties.add(new RoomProperty("TV in Bathroom", room.getHasTvInBathroom() ? "Yes" : "No"));
                 boundedProperties.add(new RoomProperty("Connecting Rooms", room.getConnectingRooms()));
                 boundedProperties.add(new RoomProperty("Facing", getFacingString()));
@@ -112,6 +114,7 @@ public class RoomView extends VerticalLayout {
                 boundedProperties.add(new RoomProperty("Sofa", room.getHasSofa() ? "Yes" : "No"));
                 boundedProperties.add(new RoomProperty("Built-in Drawers",
                         room.getHasBuiltInDrawers() ? "Yes" : "No"));
+                boundedProperties.add(new RoomProperty("Notes", room.getNotes()));
             } catch (NullPointerException ex) {
 
             }
