@@ -12,8 +12,10 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.shared.Registration;
+import de.codecamp.vaadin.components.messagedialog.MessageDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +61,21 @@ public class RoomView extends VerticalLayout {
         List<Image> images = new ArrayList<>();
         room.getPhotos().forEach(url -> images.add(new Image(url.toString(), "Photo Not Found")));
         images.forEach(Image::setWidthFull);
-//        images.forEach(image -> image.setHeight("-1"));
-        images.forEach(image -> image.addClickListener(event -> {
-                getUI().get().getPage().open(event.getSource().getSrc(), "_blank");
-            }));
+        images.forEach(image -> image.addClickListener(event -> showImageOverlay(image)));
         imageGrid.setItems(images);
+    }
+
+    private void showImageOverlay(Image image) {
+        Image overlayImage = new Image();
+        overlayImage.setSrc(image.getSrc());
+        overlayImage.setAlt("Error displaying image.");
+        overlayImage.setHeight("500px");
+        overlayImage.setWidth("-1");
+        MessageDialog imageDialog = new MessageDialog();
+        imageDialog.addButton().icon(VaadinIcon.CLOSE).closeOnClick();
+        imageDialog.add(new VerticalLayout(overlayImage));
+        imageDialog.open();
+//        image.addClickListener(event -> getUI().get().getPage().open(event.getSource().getSrc(), "_blank"));
     }
 
     private void configureTitle() {

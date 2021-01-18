@@ -1,6 +1,6 @@
 package com.jackcode.Roomr.ui;
 
-import com.jackcode.Roomr.ui.adminView.AdminView;
+import com.jackcode.Roomr.ui.admin.rooms.AdminView;
 import com.jackcode.Roomr.ui.listView.ListView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;

@@ -1,4 +1,4 @@
-package com.jackcode.Roomr.ui.adminView;
+package com.jackcode.Roomr.ui.admin.rooms;
 
 import com.jackcode.Roomr.backend.model.BathroomType;
 import com.jackcode.Roomr.backend.model.Facing;
