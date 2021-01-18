@@ -12,6 +12,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
@@ -19,11 +20,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
+import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Route(value="", layout = MainLayout.class)
@@ -36,34 +39,31 @@ public class ListView extends VerticalLayout {
     private final AccordionPanel filterAccordion = new AccordionPanel();
     private final Accordion subFilterAccordion = new Accordion();
     private final HorizontalLayout topFilters;
-    private FormLayout filterForm = new FormLayout();
+    private final FormLayout filterForm = new FormLayout();
 
 
     // Filter Components
-    ListDataProvider<Room> dataProvider;
-    List<Room> roomList;
-    TextField roomNumberFilter = new TextField("Room Number");
-    CheckboxGroup<String> tvInBathroomFilter = new CheckboxGroup();
-    CheckboxGroup<RoomType> roomTypeFilter = new CheckboxGroup<>();
-    CheckboxGroup<String> bathroomTypeFilter = new CheckboxGroup<>();
-    CheckboxGroup<String> fireplaceFilter = new CheckboxGroup();
-    CheckboxGroup<String> balconyFilter = new CheckboxGroup();
-    CheckboxGroup<String> skylightFilter = new CheckboxGroup();
-    CheckboxGroup<String> sofaFilter = new CheckboxGroup();
-    CheckboxGroup<String> bodyShowerFilter = new CheckboxGroup();
-    CheckboxGroup<Integer> showerHeadFilter = new CheckboxGroup();
-    CheckboxGroup<String> facingFilter = new CheckboxGroup<>();
-    CheckboxGroup<Integer> floorFilter = new CheckboxGroup<>();
-    Button clearFiltersButton = new Button("Clear Filters");
+    private final ListDataProvider<Room> dataProvider;
+    private final TextField roomNumberFilter = new TextField("Room Number");
+    private final CheckboxGroup<String> tvInBathroomFilter = new CheckboxGroup();
+    private final CheckboxGroup<RoomType> roomTypeFilter = new CheckboxGroup<>();
+    private final CheckboxGroup<String> bathroomTypeFilter = new CheckboxGroup<>();
+    private final CheckboxGroup<String> fireplaceFilter = new CheckboxGroup();
+    private final CheckboxGroup<String> balconyFilter = new CheckboxGroup();
+    private final CheckboxGroup<String> skylightFilter = new CheckboxGroup();
+    private final CheckboxGroup<String> sofaFilter = new CheckboxGroup();
+    private final CheckboxGroup<String> bodyShowerFilter = new CheckboxGroup();
+    private final CheckboxGroup<Integer> showerHeadFilter = new CheckboxGroup();
+    private final CheckboxGroup<String> facingFilter = new CheckboxGroup<>();
+    private final CheckboxGroup<Integer> floorFilter = new CheckboxGroup<>();
+    private final Button clearFiltersButton = new Button("Clear Filters");
 
     public ListView(RoomService roomService) {
         // Backend Components
         addClassName("list-view");
         setSizeFull();
 
-        roomList = roomService.findAll();
-        dataProvider = new ListDataProvider<>(roomList);
-
+        dataProvider = new ListDataProvider<>(roomService.findAll());
 
         topFilters = new HorizontalLayout(roomNumberFilter, clearFiltersButton);
 
@@ -141,9 +141,7 @@ public class ListView extends VerticalLayout {
         // Bathroom Type Filter
         bathroomTypeFilter.setLabel("Bathroom Style");
         List<String> bTypes = new ArrayList<>();
-        BathroomType.stream().forEach(type -> {
-            bTypes.add(type.getDescription());
-        });
+        BathroomType.stream().forEach(type -> bTypes.add(type.getDescription()));
         bathroomTypeFilter.setItems(bTypes);
         bathroomTypeFilter.addValueChangeListener(e -> applyFilter());
 
@@ -180,9 +178,7 @@ public class ListView extends VerticalLayout {
         // Facing Filter
         facingFilter.setLabel("Facing");
         List<String> facingTypes = new ArrayList<>();
-        Facing.stream().forEach(type -> {
-            facingTypes.add(type.getDescription());
-        });
+        Facing.stream().forEach(type -> facingTypes.add(type.getDescription()));
         facingFilter.setItems(facingTypes);
         facingFilter.addValueChangeListener(e -> applyFilter());
 
@@ -228,6 +224,9 @@ public class ListView extends VerticalLayout {
         roomGrid.setSizeFull();
         roomGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
         this.addColumns();
+        GridSortOrder<Room> order
+                = new GridSortOrder<>(roomGrid.getColumns().get(0), SortDirection.ASCENDING);
+        roomGrid.sort(Collections.singletonList(order));
         roomGrid.asSingleSelect().addValueChangeListener(event -> showRoom(event.getValue()));
     }
 
@@ -270,11 +269,9 @@ public class ListView extends VerticalLayout {
         dataProvider.clearFilters();
 
         // Room Number Filter
-        if (roomNumberFilter != null) {
-            dataProvider.addFilter(room -> room
-                    .getRoomNumber().toString()
-                    .contains(roomNumberFilter.getValue().trim()));
-        }
+        dataProvider.addFilter(room -> room
+                .getRoomNumber()
+                .contains(roomNumberFilter.getValue().trim()));
 
         // TV in Bathroom Filter
         if (!tvInBathroomFilter.getValue().isEmpty() &&

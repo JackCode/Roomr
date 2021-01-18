@@ -2,6 +2,7 @@ package com.jackcode.Roomr.ui.listView;
 
 import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;
+import com.jackcode.Roomr.exceptions.ExceptionDialog;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -22,11 +23,11 @@ import java.util.List;
 
 public class RoomView extends VerticalLayout {
     private Room room;
-    private H2 title = new H2();
-    private Grid<RoomProperty> propertyGrid = new Grid<>(RoomProperty.class);
-    private Grid<Image> imageGrid = new Grid<>();
+    private final H2 title = new H2();
+    private final Grid<RoomProperty> propertyGrid = new Grid<>(RoomProperty.class);
+    private final Grid<Image> imageGrid = new Grid<>();
 
-    private Button closeButton = new Button("Close");
+    private final Button closeButton = new Button("Close");
     
     public RoomView() {
         addClassName("room-view-form");
@@ -59,8 +60,9 @@ public class RoomView extends VerticalLayout {
 
     private void updateImageGrid() {
         List<Image> images = new ArrayList<>();
-        room.getPhotos().forEach(url -> images.add(new Image(url.toString(), "Photo Not Found")));
+        room.getPhotos().forEach(url -> images.add(new Image(url, "Photo Not Found")));
         images.forEach(Image::setWidthFull);
+        images.forEach(image -> image.setHeight("-1"));
         images.forEach(image -> image.addClickListener(event -> showImageOverlay(image)));
         imageGrid.setItems(images);
     }
@@ -75,7 +77,6 @@ public class RoomView extends VerticalLayout {
         imageDialog.addButton().icon(VaadinIcon.CLOSE).closeOnClick();
         imageDialog.add(new VerticalLayout(overlayImage));
         imageDialog.open();
-//        image.addClickListener(event -> getUI().get().getPage().open(event.getSource().getSrc(), "_blank"));
     }
 
     private void configureTitle() {
@@ -93,14 +94,14 @@ public class RoomView extends VerticalLayout {
     public void setRoom(Room room) {
         this.room = room;
         if (room != null) {
-            title.setText(room.getRoomNumber().toString()
+            title.setText(room.getRoomNumber()
                     + " - "
                     + room.getRoomType()
                     + " (" + room.getRoomType().getDescription() + ")");
             propertyGrid.setItems(bindRoomProperties());
+            imageGrid.setVisible(false);
             updateImageGrid();
-        } else {
-            ; // Clear images when RoomView is closed
+            imageGrid.setVisible(true);
         }
     }
 
@@ -128,7 +129,7 @@ public class RoomView extends VerticalLayout {
                         room.getHasBuiltInDrawers() ? "Yes" : "No"));
                 boundedProperties.add(new RoomProperty("Notes", room.getNotes()));
             } catch (NullPointerException ex) {
-
+                new ExceptionDialog("E1000", "Something went wrong. Error Code: E1000");
             }
         } else {
             boundedProperties.add(new RoomProperty("No Properties Found", "-"));
@@ -137,9 +138,9 @@ public class RoomView extends VerticalLayout {
     }
 
     private String getFacingString() {
-        StringBuffer facingString = new StringBuffer();
+        StringBuilder facingString = new StringBuilder();
         for (Facing facing : room.getFacing()) {
-            facingString.append(facing.getDescription() + " ");
+            facingString.append(facing.getDescription()).append(" ");
         }
         return facingString.toString();
     }

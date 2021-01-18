@@ -44,6 +44,10 @@
     overflow: auto;
 }
 
+:host(.image-grid) [part="row"] {
+    min-height: 300px;
+}
+
 @media all and (max-width: 1100px) {
     .list-view.editing .toolbar,
     .list-view.editing .room-grid {
