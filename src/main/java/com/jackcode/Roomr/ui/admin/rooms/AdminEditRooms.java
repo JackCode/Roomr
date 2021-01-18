@@ -3,7 +3,7 @@ package com.jackcode.Roomr.ui.admin.rooms;
 import com.jackcode.Roomr.backend.model.Room;
 import com.jackcode.Roomr.backend.service.RoomService;
 import com.jackcode.Roomr.security.ILAY.SecuredByRole;
-import com.jackcode.Roomr.ui.MainLayout;
+import com.jackcode.Roomr.ui.admin.AdminView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
@@ -16,11 +16,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value="admin", layout = MainLayout.class)
-@PageTitle("Admin | Roomr")
+@Route(value="admin/rooms", layout = AdminView.class)
+@PageTitle("Admin - Rooms | Roomr")
 @CssImport("./styles/admin-styles.css")
 @SecuredByRole("ROLE_Admin")
-public class AdminView extends VerticalLayout {
+public class AdminEditRooms extends VerticalLayout {
 
     private final RoomService roomService;
     private final Grid<Room> roomGrid = new Grid<>(Room.class);
@@ -28,7 +28,7 @@ public class AdminView extends VerticalLayout {
     private RoomForm form;
 
     @Autowired
-    public AdminView(RoomService roomService) {
+    public AdminEditRooms(RoomService roomService) {
         this.roomService = roomService;
         addClassName("entry-view");
         setSizeFull();
