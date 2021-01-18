@@ -53,16 +53,16 @@ public class RoomView extends VerticalLayout {
 
     private void configureImageGrid() {
         imageGrid.addClassName("image-grid");
-        imageGrid.addComponentColumn(image -> image);
         imageGrid.setSelectionMode(Grid.SelectionMode.NONE);
+        imageGrid.addComponentColumn(image -> image);
         imageGrid.setSizeFull();
     }
 
     private void updateImageGrid() {
         List<Image> images = new ArrayList<>();
-        room.getPhotos().forEach(url -> images.add(new Image(url, "Photo Not Found")));
-        images.forEach(Image::setWidthFull);
-        images.forEach(image -> image.setHeight("-1"));
+        room.getPhotos().forEach(url -> images.add(new Image(url, url + " not found.")));
+        images.forEach(image -> image.setHeight("200px"));
+        images.forEach(image -> image.setWidth("-1"));
         images.forEach(image -> image.addClickListener(event -> showImageOverlay(image)));
         imageGrid.setItems(images);
     }

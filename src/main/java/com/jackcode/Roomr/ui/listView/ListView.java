@@ -224,9 +224,13 @@ public class ListView extends VerticalLayout {
         roomGrid.setSizeFull();
         roomGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
         this.addColumns();
+
+        // Sort grid by Room Number
         GridSortOrder<Room> order
                 = new GridSortOrder<>(roomGrid.getColumns().get(0), SortDirection.ASCENDING);
         roomGrid.sort(Collections.singletonList(order));
+
+        // Open RoomView when room is clicked (or close if open)
         roomGrid.asSingleSelect().addValueChangeListener(event -> showRoom(event.getValue()));
     }
 
