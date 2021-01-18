@@ -65,11 +65,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/images/**",
                 "/styles/**",
                 "/h2-console/**",
-
-                // TODO: Remove from production code
-                "/frontend/**",
-                "/webjars/**",
-
                 "/frontend-es5/**", "/frontend-es6/**");
     }
 

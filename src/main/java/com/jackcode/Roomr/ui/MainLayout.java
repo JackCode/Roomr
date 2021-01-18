@@ -25,7 +25,7 @@ public class MainLayout extends AppLayout {
         logo.addClassName("logo");
 
         Anchor home = new Anchor("/", "Home");
-        Anchor admin = new Anchor("admin", "Admin");
+        Anchor admin = new Anchor("admin/users", "Admin");
         Anchor logout = new Anchor("logout", "Logout");
 
         HorizontalLayout header = new HorizontalLayout(logo, home, admin, logout);
