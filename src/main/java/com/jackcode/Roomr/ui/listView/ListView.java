@@ -255,6 +255,7 @@ public class ListView extends VerticalLayout {
         if (room == null) {
             closeRoomView();
         } else {
+            filterAccordion.setOpened(false);
             this.removeColumns();  // Use to remove columns when room view form opens
             roomView.setRoom(room);
             roomView.setVisible(true);

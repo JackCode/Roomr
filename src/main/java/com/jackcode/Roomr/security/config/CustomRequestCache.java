@@ -1,4 +1,4 @@
-package com.jackcode.Roomr.security;
+package com.jackcode.Roomr.security.config;
 
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 

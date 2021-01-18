@@ -1,4 +1,4 @@
-package com.jackcode.Roomr.security;
+package com.jackcode.Roomr.security.service;
 
 import com.jackcode.Roomr.security.model.AppUser;
 import com.jackcode.Roomr.security.repository.UserRepository;

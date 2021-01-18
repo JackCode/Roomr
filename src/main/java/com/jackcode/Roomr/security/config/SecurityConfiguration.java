@@ -1,8 +1,6 @@
 package com.jackcode.Roomr.security.config;
 
-import com.jackcode.Roomr.security.CustomRequestCache;
-import com.jackcode.Roomr.security.CustomUserDetailsService;
-import com.jackcode.Roomr.security.SecurityUtils;
+import com.jackcode.Roomr.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

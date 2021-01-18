@@ -1,6 +1,6 @@
 package com.jackcode.Roomr.security.ILAY;
 
-import com.jackcode.Roomr.security.SecurityUtils;
+import com.jackcode.Roomr.security.config.SecurityUtils;
 import com.jackcode.Roomr.ui.loginView.LoginView;
 import com.vaadin.flow.router.Location;
 import com.vaadin.flow.router.NotFoundException;

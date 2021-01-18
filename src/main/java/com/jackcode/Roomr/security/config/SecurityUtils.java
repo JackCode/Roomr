@@ -1,4 +1,4 @@
-package com.jackcode.Roomr.security;
+package com.jackcode.Roomr.security.config;
 
 import com.jackcode.Roomr.security.ILAY.SecuredByRole;
 import com.jackcode.Roomr.ui.loginView.LoginView;
