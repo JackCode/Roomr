@@ -11,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -51,7 +51,7 @@ public class SecurityUtils {
             return true;
         }
 
-        List<String> allowedRoles = Arrays.asList(securedByRole.value());
+        List<String> allowedRoles = Collections.singletonList(securedByRole.value());
         Authentication userAuthentication = SecurityContextHolder.getContext().getAuthentication();
         return userAuthentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

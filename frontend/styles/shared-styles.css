@@ -68,3 +68,8 @@ a[highlight] {
     font-size: 1em;
     margin: var(--lumo-space-m);
 }
+
+.overlay-image {
+    margin-top: 50px;
+    overflow: none;
+}

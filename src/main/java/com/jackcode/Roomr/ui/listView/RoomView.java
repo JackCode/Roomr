@@ -69,12 +69,16 @@ public class RoomView extends VerticalLayout {
 
     private void showImageOverlay(Image image) {
         Image overlayImage = new Image();
+        overlayImage.addClassName("overlay-image");
         overlayImage.setSrc(image.getSrc());
         overlayImage.setAlt("Error displaying image.");
         overlayImage.setHeight("500px");
         overlayImage.setWidth("-1");
+
         MessageDialog imageDialog = new MessageDialog();
-        imageDialog.addButton().icon(VaadinIcon.CLOSE).closeOnClick();
+        imageDialog.setTitle("Room " + room.getRoomNumber());
+        overlayImage.addClickListener(e -> imageDialog.close());
+        imageDialog.addButton().icon(VaadinIcon.CLOSE_SMALL).closeOnClick();
         imageDialog.add(new VerticalLayout(overlayImage));
         imageDialog.open();
     }
