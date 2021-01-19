@@ -10,4 +10,6 @@ public interface RoomRepository extends MongoRepository<Room, String> {
 
     @Query("{ 'roomNumber' : { $regex : ?0} }")
     List<Room> findAll(String roomNumber);
+
+    Room findOneByRoomNumber(String roomNumber);
 }

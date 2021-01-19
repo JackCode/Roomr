@@ -5,6 +5,7 @@ import com.jackcode.Roomr.backend.service.RoomService;
 import com.jackcode.Roomr.security.ILAY.SecuredByRole;
 import com.jackcode.Roomr.ui.admin.AdminView;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -16,6 +17,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Route(value="admin/rooms", layout = AdminView.class)
 @PageTitle("Admin - Rooms | Roomr")
 @CssImport("./styles/admin-styles.css")
@@ -25,6 +29,7 @@ public class AdminEditRooms extends VerticalLayout {
     private final RoomService roomService;
     private final Grid<Room> roomGrid = new Grid<>(Room.class);
     private final IntegerField roomFilter = new IntegerField();
+    private final Checkbox notUpdated = new Checkbox("Not Updated");
     private RoomForm form;
 
     @Autowired
@@ -60,7 +65,21 @@ public class AdminEditRooms extends VerticalLayout {
     }
 
     private void updateList() {
-        roomGrid.setItems(roomService.findAll(String.valueOf(roomFilter.getValue())));
+        List<Room> roomNumberFilterResults = roomService.findAll(String.valueOf(roomFilter.getValue()));
+        List<Room> filterResults = new ArrayList<>();
+
+        if (notUpdated.getValue()) {
+            for (Room room : roomNumberFilterResults) {
+                if (!room.getIsUpdated()) {
+                    filterResults.add(room);
+                }
+            }
+        } else {
+            filterResults = roomNumberFilterResults;
+        }
+
+
+        roomGrid.setItems(filterResults);
     }
 
     public void editRoom(Room room) {
@@ -97,11 +116,13 @@ public class AdminEditRooms extends VerticalLayout {
         roomFilter.setValueChangeMode(ValueChangeMode.LAZY);
         roomFilter.addValueChangeListener(e -> updateList());
 
+        notUpdated.addValueChangeListener(e -> updateList());
+
         Button addRoomButton = new Button("Add Room");
         addRoomButton.addClickListener(click -> addRoom());
         addRoomButton.setEnabled(false);
 
-        HorizontalLayout toolbar = new HorizontalLayout(roomFilter, addRoomButton);
+        HorizontalLayout toolbar = new HorizontalLayout(roomFilter, notUpdated, addRoomButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

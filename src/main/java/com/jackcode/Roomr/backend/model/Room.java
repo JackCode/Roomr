@@ -45,6 +45,8 @@ public class Room extends AbstractDocument {
     private Boolean hasTvInBathroom;
     @NotNull
     private Boolean hasBodyShower;
+    @NotNull
+    private Boolean isUpdated;
 
     public Room() {
     }
@@ -198,6 +200,14 @@ public class Room extends AbstractDocument {
 
     public void setHasBodyShower(Boolean hasBodyShower) {
         this.hasBodyShower = hasBodyShower;
+    }
+
+    public Boolean getIsUpdated() {
+        return isUpdated;
+    }
+
+    public void setIsUpdated(Boolean updated) {
+        isUpdated = updated;
     }
 
     @Override
