@@ -4,7 +4,7 @@
     <groupId>com.jackcode</groupId>
     <artifactId>Roomr</artifactId>
     <name>Roomr</name>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <packaging>jar</packaging>
 
     <properties>
