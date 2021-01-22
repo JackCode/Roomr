@@ -4,6 +4,7 @@ import com.jackcode.Roomr.security.ILAY.SecuredByRole;
 import com.jackcode.Roomr.ui.admin.rooms.AdminEditRooms;
 import com.jackcode.Roomr.ui.admin.users.AdminUsersView;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
@@ -31,7 +32,7 @@ public class AdminView extends AppLayout {
         Anchor home = new Anchor("/", "Home");
         Anchor logout = new Anchor("logout", "Logout");
 
-        HorizontalLayout header = new HorizontalLayout(logo, home, logout);
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, home, logout);
         header.expand(logo);
         header.setDefaultVerticalComponentAlignment(
                 FlexComponent.Alignment.CENTER

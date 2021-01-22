@@ -65,7 +65,7 @@ public class ListView extends VerticalLayout {
 
         dataProvider = new ListDataProvider<>(roomService.findAll());
 
-        topFilters = new HorizontalLayout(roomNumberFilter, clearFiltersButton);
+        topFilters = new HorizontalLayout(roomNumberFilter, roomTypeFilter);
 
         configureFilterComponents();
         configureRoomGrid();
@@ -113,11 +113,8 @@ public class ListView extends VerticalLayout {
     }
 
     private void configureFilterAccordion() {
-        subFilterAccordion.add("Room Type", roomTypeFilter);
-        subFilterAccordion.add("Additional Filters", filterForm);
-        subFilterAccordion.close();
         filterAccordion.setSummary(new Label("Filters"));
-        filterAccordion.addContent(topFilters, subFilterAccordion);
+        filterAccordion.addContent(topFilters, filterForm);
     }
 
     private void configureFilterComponents() {
@@ -190,14 +187,12 @@ public class ListView extends VerticalLayout {
         filterForm.add(
                 fireplaceFilter,
                 balconyFilter,
-                skylightFilter,
                 sofaFilter,
                 bodyShowerFilter,
-                tvInBathroomFilter,
                 showerHeadFilter,
                 facingFilter,
-                floorFilter,
-                bathroomTypeFilter);
+                bathroomTypeFilter,
+                clearFiltersButton);
 
         filterForm.setResponsiveSteps(
                 new FormLayout.ResponsiveStep("0em", 1),
@@ -212,9 +207,8 @@ public class ListView extends VerticalLayout {
         );
 
         filterForm.setColspan(showerHeadFilter, 2);
-        filterForm.setColspan(facingFilter, 2);
-        filterForm.setColspan(floorFilter, 3);
-        filterForm.setColspan(bathroomTypeFilter, 3);
+        filterForm.setColspan(facingFilter, 3);
+        filterForm.setColspan(bathroomTypeFilter, 8);
 
     }
 
