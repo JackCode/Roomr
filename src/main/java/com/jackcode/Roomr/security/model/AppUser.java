@@ -3,10 +3,14 @@ package com.jackcode.Roomr.security.model;
 import com.jackcode.Roomr.backend.model.AbstractDocument;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
 @Document(collection = "users")
 public class AppUser extends AbstractDocument {
 
+    @NotNull
     private String username;
+    @NotNull
     private String password;
     private String roles;
 

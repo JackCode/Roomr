@@ -17,3 +17,7 @@
         display: none;
     }
 }
+
+.admin-users-view .success-label {
+    color: blue;
+}

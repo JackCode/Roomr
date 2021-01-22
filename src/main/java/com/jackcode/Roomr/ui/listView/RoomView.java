@@ -60,7 +60,7 @@ public class RoomView extends VerticalLayout {
 
     private void updateImageGrid() {
         List<Image> images = new ArrayList<>();
-        room.getPhotos().forEach(url -> images.add(new Image(url, url + " not found.")));
+        room.getPhotos().forEach(url -> images.add(new Image(url, "Photo missing.")));
         images.forEach(image -> image.setHeight("200px"));
         images.forEach(image -> image.setWidth("-1"));
         images.forEach(image -> image.addClickListener(event -> showImageOverlay(image)));

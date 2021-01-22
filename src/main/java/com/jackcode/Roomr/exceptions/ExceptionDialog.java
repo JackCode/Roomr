@@ -20,11 +20,10 @@ public class ExceptionDialog extends MessageDialog {
     }
 
     private void showErrorDialog() {
-        MessageDialog errorDialog = new MessageDialog();
-        errorDialog.setTitle("Internal Error");
-        errorDialog.setMessage(message);
-        errorDialog.addButton().text("Close");
-        errorDialog.open();
+        setTitle("Internal Error");
+        setMessage(message);
+        addButton().text("Close").closeOnClick();
+        open();
     }
 
     private void logError() {
