@@ -9,10 +9,7 @@ public enum RoomType {
     K1RRU1("1 King Bed - Hannaford Suite"),
     K1RRC("Standard 1 King Bed w/ Accessible Tub"),
     K1RRD("Standard 1 King Bed w/ Roll-in Shower"),
-    K1RRV("Standard 1 King Bed - Hearing Accessible/Accessible Tub"),
     Q2RRC("Standard 2 Queen Beds w/ Accessible Tub"),
-    Q2RRD("Standard 2 Queen Beds w/ Roll-in Shower"),
-    Q2RRV("Standard 2 Queen Beds - Hearing Accessible/Accessible Tub"),
     K1ZRU1("1 King Bed - Presidential Suite");
 
     private String description;
