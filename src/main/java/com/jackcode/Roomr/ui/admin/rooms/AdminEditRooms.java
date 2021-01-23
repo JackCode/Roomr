@@ -29,7 +29,7 @@ public class AdminEditRooms extends VerticalLayout {
     private final RoomService roomService;
     private final Grid<Room> roomGrid = new Grid<>(Room.class);
     private final IntegerField roomFilter = new IntegerField();
-    private final Checkbox notUpdated = new Checkbox("Not Updated");
+    private final Checkbox notUpdated = new Checkbox("Needs Photos");
     private RoomForm form;
 
     @Autowired

@@ -14,7 +14,7 @@
 }
 
 .list-view .room-view-form {
-    flex: 3;
+    flex: 4;
     padding-top: 0;
     padding-bottom: 0;
 }
@@ -29,7 +29,7 @@
 }
 
 .room-view-form .properties {
-    flex: 5;
+    flex: 1;
 }
 
 .room-view-form .room-heading {

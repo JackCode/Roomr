@@ -18,6 +18,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.provider.SortDirection;
@@ -76,7 +77,8 @@ public class ListView extends VerticalLayout {
         roomView.addListener(RoomView.CloseEvent.class, e -> closeRoomView());
         roomView.setSizeFull();
 
-        Div content = new Div(roomGrid, roomView);
+        SplitLayout content = new SplitLayout(roomGrid, roomView);
+        content.setOrientation(SplitLayout.Orientation.HORIZONTAL);
         content.addClassName("content");
         content.setSizeFull();
         content.setMaxHeight("600px");

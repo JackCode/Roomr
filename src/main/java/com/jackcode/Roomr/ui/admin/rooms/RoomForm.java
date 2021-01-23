@@ -36,7 +36,7 @@ public class RoomForm extends FormLayout {
     Checkbox hasSkylight = new Checkbox("Skylight");
     Checkbox hasBalcony = new Checkbox("Balcony");
     Checkbox hasBodyShower = new Checkbox("Shower - Body Sprayer");
-    Checkbox isUpdated = new Checkbox("Is Updated");
+    Checkbox isUpdated = new Checkbox("Has Photos");
     CheckboxGroup<Facing> facing = new CheckboxGroup<>();
     TextField connectingRooms = new TextField("Connecting Rooms");
     TextField notes = new TextField("Notes");

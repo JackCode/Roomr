@@ -10,11 +10,11 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.shared.Registration;
 import de.codecamp.vaadin.components.messagedialog.MessageDialog;
 
@@ -26,6 +26,7 @@ public class RoomView extends VerticalLayout {
     private final H2 title = new H2();
     private final Grid<RoomProperty> propertyGrid = new Grid<>(RoomProperty.class);
     private final Grid<Image> imageGrid = new Grid<>();
+    private final SplitLayout content;
 
     private final Button closeButton = new Button("Close");
     
@@ -37,8 +38,10 @@ public class RoomView extends VerticalLayout {
         configureTitle();
         configureCloseButton();
 
-        Div content = new Div(propertyGrid, imageGrid);
+        content = new SplitLayout(propertyGrid, imageGrid);
+        content.setOrientation(SplitLayout.Orientation.HORIZONTAL);
         content.addClassName("room-content");
+        content.addSplitterDragendListener(e -> updateImageSize());
         content.setSizeFull();
 
         expand(title);
@@ -61,8 +64,21 @@ public class RoomView extends VerticalLayout {
     private void updateImageGrid() {
         List<Image> images = new ArrayList<>();
         room.getPhotos().forEach(url -> images.add(new Image(url, "Photo missing.")));
+        SplitLayout testL = new SplitLayout();
+        String splitWidth = content.getWidth();
         images.forEach(image -> image.setHeight("200px"));
         images.forEach(image -> image.setWidth("-1"));
+        images.forEach(image -> image.addClickListener(event -> showImageOverlay(image)));
+        imageGrid.setItems(images);
+    }
+
+    private void updateImageSize() {
+        List<Image> images = new ArrayList<>();
+        room.getPhotos().forEach(url -> images.add(new Image(url, "Photo missing.")));
+        SplitLayout testL = new SplitLayout();
+        String splitWidth = content.getWidth();
+        images.forEach(image -> image.setWidth(splitWidth));
+        images.forEach(image -> image.setHeight("-1"));
         images.forEach(image -> image.addClickListener(event -> showImageOverlay(image)));
         imageGrid.setItems(images);
     }
