@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackageClasses = {RoomRepository.class, UserRepository.class})
 public class RoomrApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(RoomrApplication.class, args);
-	}
+	public static void main(String[] args) { SpringApplication.run(RoomrApplication.class, args); }
 
 }

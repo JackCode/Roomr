@@ -4,6 +4,7 @@ import com.jackcode.Roomr.backend.model.BathroomType;
 import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;
 import com.jackcode.Roomr.backend.model.RoomType;
+import com.jackcode.Roomr.backend.service.ImageService;
 import com.jackcode.Roomr.backend.service.RoomService;
 import com.jackcode.Roomr.ui.MainLayout;
 import com.vaadin.flow.component.accordion.Accordion;
@@ -18,7 +19,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.provider.SortDirection;
@@ -33,6 +33,8 @@ import java.util.List;
 @Route(value="", layout = MainLayout.class)
 @PageTitle("Roomr | List View")
 public class ListView extends VerticalLayout {
+
+    private final ImageService imageService = new ImageService();
 
     // Visual Components
     private final Grid<Room> roomGrid = new Grid<>();
@@ -73,12 +75,11 @@ public class ListView extends VerticalLayout {
         configureFilterAccordion();
         configureClearFiltersButton();
 
-        roomView = new RoomView();
+        roomView = new RoomView(imageService);
         roomView.addListener(RoomView.CloseEvent.class, e -> closeRoomView());
         roomView.setSizeFull();
 
-        SplitLayout content = new SplitLayout(roomGrid, roomView);
-        content.setOrientation(SplitLayout.Orientation.HORIZONTAL);
+        Div content = new Div(roomGrid, roomView);
         content.addClassName("content");
         content.setSizeFull();
         content.setMaxHeight("600px");
