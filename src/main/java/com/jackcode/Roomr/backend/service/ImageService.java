@@ -30,7 +30,7 @@ public class ImageService {
         // Connect to s3Client
         s3 = AmazonS3ClientBuilder
                 .standard()
-                // Add in dev mode .withCredentials(new AWSStaticCredentialsProvider(CREDENTIALS))
+//                .withCredentials(new AWSStaticCredentialsProvider(CREDENTIALS))
                 .withRegion(Regions.US_EAST_2)
                 .build();
 
@@ -67,8 +67,15 @@ public class ImageService {
     }
 
     private String getUrlAsString(String key) {
+        // Set the presigned URL to expire after one week.
+        java.util.Date expiration = new java.util.Date();
+        long expTimeMillis = expiration.getTime();
+        expTimeMillis += 1000 * 60 * 60 * 24 * 7;
+        expiration.setTime(expTimeMillis);
+
+
         return s3.generatePresignedUrl(new GeneratePresignedUrlRequest(
-                BUCKET_NAME, key).withMethod(HttpMethod.GET)).toString();
+                BUCKET_NAME, key).withMethod(HttpMethod.GET).withExpiration(expiration)).toString();
     }
 
     private String getRoomNumberFromKey(String key) {

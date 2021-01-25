@@ -36,7 +36,7 @@ public class RoomView extends VerticalLayout {
     private final Button closeButton = new Button();
     private final ImageService imageService;
     // timer is used to call resize of photos after grid render
-    private final SimpleTimer timer = new SimpleTimer(new BigDecimal("0.5"));
+    private final SimpleTimer timer = new SimpleTimer(new BigDecimal("1"));
     
     public RoomView(ImageService imageService) {
         this.imageService = imageService;
@@ -89,7 +89,7 @@ public class RoomView extends VerticalLayout {
     // You have to use this to set the images first to prevent the grid
     // from having too small of rows
     private void updateImageGrid() {
-        propertyImagesSplitLayout.setSplitterPosition(70);
+        propertyImagesSplitLayout.setSplitterPosition(50);
         images = imageService.getImagesForRoom(room.getRoomNumber());
         if (images == null || images.isEmpty()) {
             Image voidImage = new Image();
