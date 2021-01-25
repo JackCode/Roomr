@@ -166,7 +166,7 @@ public class ListView extends VerticalLayout {
         sofaFilter.addValueChangeListener(e -> applyFilter());
 
         // Body Shower Filter
-        bodyShowerFilter.setLabel("Shower - Body Sprayer");
+        bodyShowerFilter.setLabel("Shower Spa");
         bodyShowerFilter.setItems("Yes", "No");
         bodyShowerFilter.addValueChangeListener(e -> applyFilter());
 

@@ -1,9 +1,6 @@
 package com.jackcode.Roomr.backend.service;
 
 import com.amazonaws.HttpMethod;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -19,10 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ImageService {
-    private final AWSCredentials CREDENTIALS = new BasicAWSCredentials(
-            "AKIAIK5MJDBNUDUGAXVQ",
-            "oIP+3sRURNRYTPPRN+WVJp3x8MCAy8ZIAAIpdq/t"
-    );
+    // Add in dev mode
+//    private final AWSCredentials CREDENTIALS = new BasicAWSCredentials(
+//            System.getenv("s3AccessKey"),
+//            System.getenv("s3SecretKey")
+//    );
     private final String BUCKET_NAME = "elasticbeanstalk-us-east-2-537812688195";
     private final AmazonS3 s3;
 
@@ -32,7 +30,7 @@ public class ImageService {
         // Connect to s3Client
         s3 = AmazonS3ClientBuilder
                 .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(CREDENTIALS))
+                // Add in dev mode .withCredentials(new AWSStaticCredentialsProvider(CREDENTIALS))
                 .withRegion(Regions.US_EAST_2)
                 .build();
 
