@@ -55,7 +55,7 @@ public class ImageService {
         String imageURL = getUrlAsString(key);
         Image image = new Image(
                 imageURL,
-                "Error loading photo");
+                "Logout and login to refresh photos");
 
         if (images.containsKey(roomNumber)) {
             images.get(roomNumber).add(image);
@@ -85,6 +85,10 @@ public class ImageService {
 
     public List<Image> getImagesForRoom(String roomNumber) {
         return images.getOrDefault(roomNumber, new ArrayList<Image>());
+    }
+
+    public Map<String, List<Image>> getImages() {
+        return this.images;
     }
 
 

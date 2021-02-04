@@ -7,7 +7,6 @@ import com.jackcode.Roomr.backend.model.RoomType;
 import com.jackcode.Roomr.backend.service.ImageService;
 import com.jackcode.Roomr.backend.service.RoomService;
 import com.jackcode.Roomr.ui.MainLayout;
-import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.accordion.AccordionPanel;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
@@ -34,13 +33,10 @@ import java.util.List;
 @PageTitle("Roomr | List View")
 public class ListView extends VerticalLayout {
 
-    private final ImageService imageService = new ImageService();
-
     // Visual Components
     private final Grid<Room> roomGrid = new Grid<>();
     private final RoomView roomView;
     private final AccordionPanel filterAccordion = new AccordionPanel();
-    private final Accordion subFilterAccordion = new Accordion();
     private final HorizontalLayout topFilters;
     private final FormLayout filterForm = new FormLayout();
 
@@ -48,21 +44,21 @@ public class ListView extends VerticalLayout {
     // Filter Components
     private final ListDataProvider<Room> dataProvider;
     private final TextField roomNumberFilter = new TextField("Room Number");
-    private final CheckboxGroup<String> tvInBathroomFilter = new CheckboxGroup();
+    private final CheckboxGroup<String> tvInBathroomFilter = new CheckboxGroup<>();
     private final CheckboxGroup<RoomType> roomTypeFilter = new CheckboxGroup<>();
     private final CheckboxGroup<String> bathroomTypeFilter = new CheckboxGroup<>();
-    private final CheckboxGroup<String> fireplaceFilter = new CheckboxGroup();
-    private final CheckboxGroup<String> balconyFilter = new CheckboxGroup();
-    private final CheckboxGroup<String> skylightFilter = new CheckboxGroup();
-    private final CheckboxGroup<String> sofaFilter = new CheckboxGroup();
-    private final CheckboxGroup<String> bodyShowerFilter = new CheckboxGroup();
-    private final CheckboxGroup<Integer> showerHeadFilter = new CheckboxGroup();
+    private final CheckboxGroup<String> fireplaceFilter = new CheckboxGroup<>();
+    private final CheckboxGroup<String> balconyFilter = new CheckboxGroup<>();
+    private final CheckboxGroup<String> skylightFilter = new CheckboxGroup<>();
+    private final CheckboxGroup<String> sofaFilter = new CheckboxGroup<>();
+    private final CheckboxGroup<String> bodyShowerFilter = new CheckboxGroup<>();
+    private final CheckboxGroup<Integer> showerHeadFilter = new CheckboxGroup<>();
     private final CheckboxGroup<String> facingFilter = new CheckboxGroup<>();
     private final CheckboxGroup<Integer> floorFilter = new CheckboxGroup<>();
     private final Button clearFiltersButton = new Button("Clear Filters");
 
+
     public ListView(RoomService roomService) {
-        // Backend Components
         addClassName("list-view");
         setSizeFull();
 
@@ -75,14 +71,14 @@ public class ListView extends VerticalLayout {
         configureFilterAccordion();
         configureClearFiltersButton();
 
-        roomView = new RoomView(imageService);
+        ImageService imageService = new ImageService();
+        roomView = new RoomView(imageService.getImages());
         roomView.addListener(RoomView.CloseEvent.class, e -> closeRoomView());
         roomView.setSizeFull();
 
         Div content = new Div(roomGrid, roomView);
         content.addClassName("content");
         content.setSizeFull();
-        content.setMaxHeight("600px");
 
 
         Div allContent = new Div(filterAccordion, content);

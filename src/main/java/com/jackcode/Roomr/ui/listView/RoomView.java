@@ -1,9 +1,7 @@
 package com.jackcode.Roomr.ui.listView;
 
-import com.flowingcode.vaadin.addons.simpletimer.SimpleTimer;
 import com.jackcode.Roomr.backend.model.Facing;
 import com.jackcode.Roomr.backend.model.Room;
-import com.jackcode.Roomr.backend.service.ImageService;
 import com.jackcode.Roomr.exceptions.ExceptionDialog;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -14,6 +12,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -21,55 +20,44 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.shared.Registration;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RoomView extends VerticalLayout {
     private Room room;
     private final H4 title = new H4();
     private final Grid<RoomProperty> propertyGrid = new Grid<>(RoomProperty.class);
-    private final Grid<Image> imageGrid = new Grid<>();
+    private final VerticalLayout imageLayout = new VerticalLayout();
     private SplitLayout propertyImagesSplitLayout;
-    private List<Image> images;
-    private Boolean firstSplitLayoutResize;
     private final Button closeButton = new Button();
-    private final ImageService imageService;
-    // timer is used to call resize of photos after grid render
-    private final SimpleTimer timer = new SimpleTimer(new BigDecimal("1"));
+
+    private final Map<String, List<Image>> allRoomImages;
     
-    public RoomView(ImageService imageService) {
-        this.imageService = imageService;
+    public RoomView(Map<String, List<Image>> allRoomImages) {
+        this.allRoomImages = allRoomImages;
         addClassName("room-view-form");
 
         configurePropertyGrid();
-        configureImageGrid();
         configureSplitLayout();
         configureTitle();
         configureCloseButton();
-        configureTimer();
 
         HorizontalLayout hL = new HorizontalLayout(title, closeButton);
         title.setWidthFull();
         hL.setFlexGrow(1, title);
-        add(hL, timer, propertyImagesSplitLayout);
+        add(hL, propertyImagesSplitLayout);
     }
 
     private void configureSplitLayout() {
         propertyImagesSplitLayout = new SplitLayout();
         propertyImagesSplitLayout.addToPrimary(propertyGrid);
-        propertyImagesSplitLayout.addToSecondary(imageGrid);
+        propertyImagesSplitLayout.addToSecondary(imageLayout);
         propertyImagesSplitLayout.setOrientation(SplitLayout.Orientation.HORIZONTAL);
         propertyImagesSplitLayout.addClassName("room-content");
-        propertyImagesSplitLayout.addSplitterDragendListener(e -> updateImageSize());
         propertyImagesSplitLayout.setPrimaryStyle("minWidth", "400px");
         propertyImagesSplitLayout.setSecondaryStyle("minWidth", "300px");
         propertyImagesSplitLayout.setSizeFull();
-    }
-
-    private void configureTimer() {
-        timer.setVisible(false);
-        timer.addTimerEndEvent(e -> updateImageSize());
     }
 
     private void configureCloseButton() {
@@ -79,63 +67,25 @@ public class RoomView extends VerticalLayout {
         closeButton.addClickListener(event -> fireEvent(new CloseEvent(this)));
     }
 
-    private void configureImageGrid() {
-        imageGrid.addClassName("image-grid");
-        imageGrid.setSelectionMode(Grid.SelectionMode.NONE);
-        imageGrid.addComponentColumn(image -> image);
-        imageGrid.setSizeFull();
-    }
-
-    // You have to use this to set the images first to prevent the grid
-    // from having too small of rows
     private void updateImageGrid() {
-        propertyImagesSplitLayout.setSplitterPosition(50);
-        images = imageService.getImagesForRoom(room.getRoomNumber());
-        if (images == null || images.isEmpty()) {
-            Image voidImage = new Image();
-            voidImage.setAlt("No photos for this room");
-            images.add(voidImage);
-        } else {
-            images.forEach(image -> image.setHeight("200px"));
-            images.forEach(image -> image.setWidth("-1"));
-            images.forEach(image -> image.addClickListener(event -> showImageOverlay(image)));
-        }
-        imageGrid.setItems(images);
-        firstSplitLayoutResize = true;
-        timer.reset();
-        timer.start();
-    }
-
-    // You can then update the size and such, but have to create a new list
-    // this is mildly expensive and should be fixed one day
-    private void updateImageSize() {
-        if (firstSplitLayoutResize) {
-            List<Image> updatedImages = new ArrayList<>();
-            for (Image curImage : this.images) {
-                updatedImages.add(new Image(curImage.getSrc(), "No photos for this room"));
+        imageLayout.removeAll();
+        propertyImagesSplitLayout.setSplitterPosition(75);
+        if (allRoomImages.getOrDefault(room.getRoomNumber(), null) != null) {
+            for (Image image : allRoomImages.get(room.getRoomNumber())) {
+                image.setWidth("100%");
+                image.setHeight("-1");
+                image.addClickListener(event -> showImageOverlay(image));
+                imageLayout.add(image);
             }
-            updatedImages.forEach(image -> image.setWidth("100%"));
-            updatedImages.forEach(image -> image.addClickListener(event -> showImageOverlay(image)));
-            imageGrid.setItems(updatedImages);
+        } else {
+            imageLayout.add(new Label("No photos for this room."));
         }
-        firstSplitLayoutResize = false;
     }
 
     private void showImageOverlay(Image image) {
-        getUI().get().getPage().open(image.getSrc(), "_blank");
-//        Image overlayImage = new Image();
-//        overlayImage.addClassName("overlay-image");
-//        overlayImage.setSrc(image.getSrc());
-//        overlayImage.setAlt("Error displaying image.");
-//        overlayImage.setHeight("500px");
-//        overlayImage.setWidth("-1");
-//
-//        MessageDialog imageDialog = new MessageDialog();
-//        imageDialog.setTitle("Room " + room.getRoomNumber());
-//        overlayImage.addClickListener(e -> imageDialog.close());
-//        imageDialog.addButton().icon(VaadinIcon.CLOSE_SMALL).closeOnClick();
-//        imageDialog.add(new VerticalLayout(overlayImage));
-//        imageDialog.open();
+        if(getUI().isPresent()) {
+            getUI().get().getPage().open(image.getSrc(), "_blank");
+        }
     }
 
     private void configureTitle() {
